@@ -15,7 +15,10 @@ class AppElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFFC93480),
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.symmetric(
+          vertical: 15.0,
+          horizontal: 25.0,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
