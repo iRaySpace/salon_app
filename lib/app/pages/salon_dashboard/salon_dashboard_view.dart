@@ -32,7 +32,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                   ),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         "Salon Dashboard",
                         style: TextStyle(
                           color: Color(0xFFC93480),
@@ -40,13 +40,28 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                           fontSize: 21.0,
                         ),
                       ),
-                      SizedBox(height: 25.0),
-                      DashboardCard(title: 'View Appointments'),
-                      DashboardCard(title: 'Manage Services'),
-                      DashboardCard(title: 'Add Stylist'),
-                      DashboardCard(title: 'Ratings and Feedbacks'),
-                      DashboardCard(title: 'Manage Schedule'),
-                      SizedBox(height: 25.0),
+                      const SizedBox(height: 25.0),
+                      DashboardCard(
+                        title: 'View Appointments',
+                        onTap: () {},
+                      ),
+                      DashboardCard(
+                        title: 'Manage Services',
+                        onTap: () {},
+                      ),
+                      DashboardCard(
+                        title: 'Add Stylist',
+                        onTap: () {},
+                      ),
+                      DashboardCard(
+                        title: 'Ratings and Feedbacks',
+                        onTap: () {},
+                      ),
+                      DashboardCard(
+                        title: 'Manage Schedule',
+                        onTap: () {},
+                      ),
+                      const SizedBox(height: 25.0),
                       AppElevatedButton(
                         onPressed: () {},
                         child: Text('Logout'),
