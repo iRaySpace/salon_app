@@ -52,7 +52,7 @@ class _ProfileViewState extends State<ProfileView> {
                   AppElevatedButton(
                     onPressed: handleStart,
                     child: const Text(
-                      "Start your Salon's journey",
+                      "Start your Salon's Journey",
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
