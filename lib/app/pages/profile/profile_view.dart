@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
+import 'package:salon_app/app/pages/salon_signup/salon_signup_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
 
 class ProfileView extends StatefulWidget {
@@ -10,9 +12,27 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  void handleSalon() {}
+  void handleStart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SalonSignupView(),
+      ),
+    );
+  }
 
-  void handleLogout() {}
+  void handleSalon() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SalonDashboardView(),
+      ),
+    );
+  }
+
+  void handleLogout() {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +50,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   const SizedBox(height: 56.0),
                   AppElevatedButton(
-                    onPressed: handleSalon,
+                    onPressed: handleStart,
                     child: const Text(
                       "Start your Salon's journey",
                       style: TextStyle(
