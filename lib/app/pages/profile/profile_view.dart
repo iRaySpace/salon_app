@@ -32,6 +32,17 @@ class _ProfileViewState extends State<ProfileView> {
                   AppElevatedButton(
                     onPressed: handleSalon,
                     child: const Text(
+                      "Start your Salon's journey",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  AppElevatedButton(
+                    onPressed: handleSalon,
+                    child: const Text(
                       'Your Salon',
                       style: TextStyle(
                         fontSize: 18.0,
