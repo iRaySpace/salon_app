@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/discovery/widgets/discovery_card.dart';
 import 'package:salon_app/app/pages/discovery/widgets/top_card.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
+import 'package:salon_app/data/salon_repository.dart';
 
 class DiscoveryView extends StatefulWidget {
   const DiscoveryView({super.key});
@@ -11,6 +12,16 @@ class DiscoveryView extends StatefulWidget {
 }
 
 class _DiscoveryViewState extends State<DiscoveryView> {
+  Future<void> getSalons() async {
+    final salons = await SalonRepository().getSalons();
+    print(salons);
+  }
+
+  @override
+  void initState() {
+    getSalons();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
