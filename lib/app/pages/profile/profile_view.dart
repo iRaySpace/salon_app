@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
 import 'package:salon_app/app/pages/salon_signup/salon_signup_view.dart';
+import 'package:salon_app/app/pages/signin/signin_view.dart';
 import 'package:salon_app/app/pages/signup/signup_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
 
@@ -22,7 +23,14 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  void handleLogin() {}
+  void handleLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SigninView(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

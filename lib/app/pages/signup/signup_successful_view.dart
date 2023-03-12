@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/profile/profile_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/signin/signin_view.dart';
 
@@ -10,11 +11,11 @@ class SignupSuccessfulView extends StatefulWidget {
 }
 
 class _SignupSuccessfulViewState extends State<SignupSuccessfulView> {
-  void handleLogin() {
-    Navigator.push(
+  void handleProfile() {
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const SigninView(),
+        builder: (context) => const ProfileView(),
       ),
     );
   }
@@ -41,8 +42,8 @@ class _SignupSuccessfulViewState extends State<SignupSuccessfulView> {
               ),
               const SizedBox(height: 25.0),
               AppElevatedButton(
-                onPressed: handleLogin,
-                child: const Text('Sign In'),
+                onPressed: handleProfile,
+                child: const Text('Go back to Profile'),
               ),
             ],
           ),
