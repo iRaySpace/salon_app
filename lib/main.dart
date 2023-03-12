@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:salon_app/app/pages/signup/signup_successful.dart';
 import 'package:salon_app/app/pages/startup/startup_view.dart';
 
 import 'firebase_options.dart';
