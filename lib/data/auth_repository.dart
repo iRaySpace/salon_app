@@ -11,4 +11,9 @@ class AuthRepository {
     );
     return credential;
   }
+
+  Future<UserCredential> signIn(String email, String password) async {
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    return credential;
+  }
 }

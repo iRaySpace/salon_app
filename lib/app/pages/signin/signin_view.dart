@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/discovery/discovery_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/data/auth_repository.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -9,6 +12,74 @@ class SigninView extends StatefulWidget {
 }
 
 class _SigninViewState extends State<SigninView> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool _obscurePassword = true;
+
+  final Map<String, String> _data = {};
+
+  // for auth errors
+  String? _emailErrorText;
+  String? _passwordErrorText;
+
+  void _toggleObscure() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  void handleSignin() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text('Signing in'),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      try {
+        setState(() {
+          _emailErrorText = null;
+          _passwordErrorText = null;
+        });
+        final email = _data['email']!;
+        final password = _data['password']!;
+        await AuthRepository().signIn(email, password);
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DiscoveryView(),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'wrong-password') {
+          setState(() => _passwordErrorText = 'Wrong password');
+        } else if (e.code == 'user-not-found') {
+          setState(() => _emailErrorText = 'User not found');
+        }
+        Navigator.of(context).pop();
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,33 +102,60 @@ class _SigninViewState extends State<SigninView> {
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(25.0),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Email',
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              onSaved: (newValue) => _data['email'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input email';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                labelText: 'Email',
+                                errorText: _emailErrorText,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
-                          ),
-                          TextFormField(
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Password',
+                            TextFormField(
+                              obscureText: _obscurePassword,
+                              onSaved: (newValue) =>
+                                  _data['password'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input password';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                labelText: 'Password',
+                                errorText: _passwordErrorText,
+                                suffixIcon: IconButton(
+                                  icon: Icon(_obscurePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: _toggleObscure,
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 15.0),
-                          AppElevatedButton(
-                            onPressed: () {},
-                            child: Text('Sign in'),
-                          ),
-                        ],
+                            const SizedBox(height: 15.0),
+                            AppElevatedButton(
+                              onPressed: handleSignin,
+                              child: const Text('Sign in'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Text('Forgot Password?'),
+                    child: const Text('Forgot Password?'),
                   ),
                   const SizedBox(height: 25.0),
                   const Text(
