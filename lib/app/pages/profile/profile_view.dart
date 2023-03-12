@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
 import 'package:salon_app/app/pages/salon_signup/salon_signup_view.dart';
+import 'package:salon_app/app/pages/signup/signup_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
 
 class ProfileView extends StatefulWidget {
@@ -12,27 +13,16 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  void handleStart() {
+  void handleSignup() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const SalonSignupView(),
+        builder: (context) => const SignupView(),
       ),
     );
   }
 
-  void handleSalon() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SalonDashboardView(),
-      ),
-    );
-  }
-
-  void handleLogout() {
-
-  }
+  void handleLogin() {}
 
   @override
   Widget build(BuildContext context) {
@@ -45,43 +35,9 @@ class _ProfileViewState extends State<ProfileView> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(25.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 56.0),
-                  AppElevatedButton(
-                    onPressed: handleStart,
-                    child: const Text(
-                      "Start your Salon's Journey",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15.0),
-                  AppElevatedButton(
-                    onPressed: handleSalon,
-                    child: const Text(
-                      'Your Salon',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15.0),
-                  AppElevatedButton(
-                    onPressed: handleLogout,
-                    child: const Text(
-                      'Logout',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+              child: NewProfileColumn(
+                handleLogin: handleLogin,
+                handleSignup: handleSignup,
               ),
             ),
           ),
@@ -90,6 +46,48 @@ class _ProfileViewState extends State<ProfileView> {
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: navigationItemsIndexed['profile'] as int,
       ),
+    );
+  }
+}
+
+class NewProfileColumn extends StatelessWidget {
+  const NewProfileColumn({
+    super.key,
+    required this.handleLogin,
+    required this.handleSignup,
+  });
+
+  final Function() handleLogin;
+  final Function() handleSignup;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 56.0),
+        AppElevatedButton(
+          onPressed: handleLogin,
+          child: const Text(
+            "Login",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+        AppElevatedButton(
+          onPressed: handleSignup,
+          child: const Text(
+            'Sign Up',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
