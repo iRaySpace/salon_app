@@ -15,4 +15,14 @@ class Customer {
   final String type;
 
   final String? uid;
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+      'gender': gender,
+      'type': type,
+    };
+  }
 }
