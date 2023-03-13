@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
 
@@ -13,7 +14,8 @@ class _StylistsViewState extends State<StylistsView> {
   List<Stylist> _stylists = [];
 
   void loadStylists() async {
-    final stylists = await StylistRepository().getStylists();
+    final stylists =
+        await StylistRepository().getStylistsByUid(SalonRepository.salon!.id);
     setState(() {
       _stylists = stylists;
     });

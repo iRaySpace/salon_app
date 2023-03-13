@@ -20,4 +20,17 @@ class StylistRepository {
     }
     return data;
   }
+
+  Future<List<Stylist>> getStylistsByUid(uid) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("stylist")
+        .where('salonId', isEqualTo: uid)
+        .get();
+    final List<Stylist> data = [];
+    for (final doc in snapshot.docs) {
+      final docData = doc.data();
+      data.add(Stylist.fromJson({...docData, 'id': doc.id}));
+    }
+    return data;
+  }
 }

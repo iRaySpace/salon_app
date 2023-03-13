@@ -84,7 +84,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                         onTap: () {},
                       ),
                       DashboardCard(
-                        title: 'Add Stylist',
+                        title: 'Manage Stylist',
                         onTap: handleStylist,
                       ),
                       DashboardCard(
