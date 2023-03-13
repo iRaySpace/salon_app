@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/discovery/discovery_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/data/customer_repository.dart';
+import 'package:salon_app/domain/entities/customer.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -57,16 +60,28 @@ class _SigninViewState extends State<SigninView> {
           _emailErrorText = null;
           _passwordErrorText = null;
         });
+
         final email = _data['email']!;
         final password = _data['password']!;
-        await AuthRepository().signIn(email, password);
+        final customer = await AuthRepository().signIn(email, password);
+
         Navigator.of(context).pop();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DiscoveryView(),
-          ),
-        );
+
+        if (customer.type == Customer.salonType) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SalonDashboardView(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DiscoveryView(),
+            ),
+          );
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'wrong-password') {
           setState(() => _passwordErrorText = 'Wrong password');

@@ -3,6 +3,8 @@ import 'package:salon_app/domain/entities/customer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
+  Customer? customer;
+
   Future<UserCredential> signup(Customer customer, String password) async {
     final credential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -17,9 +19,26 @@ class AuthRepository {
     return credential;
   }
 
-  Future<UserCredential> signIn(String email, String password) async {
+  Future<Customer> signIn(String email, String password) async {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    return credential;
+    final uid = credential.user!.uid;
+    final customerSnapshot = (await FirebaseFirestore.instance
+            .collection("customer")
+            .where("uid", isEqualTo: uid)
+            .get())
+        .docs
+        .first;
+    final customerData = customerSnapshot.data();
+    final customer = Customer(
+      uid: customerSnapshot.id,
+      email: customerData['email'],
+      firstName: customerData['firstName'],
+      lastName: customerData['lastName'],
+      type: customerData['type'],
+      gender: '',
+    );
+    this.customer = customer;
+    return customer;
   }
 }

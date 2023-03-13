@@ -16,6 +16,9 @@ class Customer {
 
   final String? uid;
 
+  static const customerType = 'customer';
+  static const salonType = 'salon';
+
   Map<String, dynamic> toJSON() {
     return {
       'email': email,
