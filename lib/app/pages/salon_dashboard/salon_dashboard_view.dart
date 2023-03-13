@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/ratings/ratings_view.dart';
 import 'package:salon_app/app/pages/salon_dashboard/widgets/dashboard_card.dart';
 
 class SalonDashboardView extends StatefulWidget {
@@ -10,6 +11,15 @@ class SalonDashboardView extends StatefulWidget {
 }
 
 class _SalonDashboardViewState extends State<SalonDashboardView> {
+  void handleRatings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RatingsView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +65,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                       ),
                       DashboardCard(
                         title: 'Ratings and Feedbacks',
-                        onTap: () {},
+                        onTap: handleRatings,
                       ),
                       DashboardCard(
                         title: 'Manage Schedule',
