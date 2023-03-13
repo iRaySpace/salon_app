@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/ratings/ratings_view.dart';
 import 'package:salon_app/app/pages/salon_dashboard/widgets/dashboard_card.dart';
+import 'package:salon_app/app/pages/stylists/stylists_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/customer_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
@@ -30,6 +31,15 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
       context,
       MaterialPageRoute(
         builder: (context) => const RatingsView(),
+      ),
+    );
+  }
+
+  void handleStylist() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const StylistsView(),
       ),
     );
   }
@@ -75,7 +85,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                       ),
                       DashboardCard(
                         title: 'Add Stylist',
-                        onTap: () {},
+                        onTap: handleStylist,
                       ),
                       DashboardCard(
                         title: 'Ratings and Feedbacks',
