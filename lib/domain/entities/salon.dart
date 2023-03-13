@@ -6,6 +6,8 @@ class Salon {
     required this.contactNumber,
     required this.businessRegistration,
     required this.logoUrl,
+    required this.uid,
+    required this.id,
   });
 
   final String salonName;
@@ -14,6 +16,8 @@ class Salon {
   final int contactNumber;
   final String businessRegistration;
   final String logoUrl;
+  final String? uid;
+  final String? id;
 
   static fromJson(data) {
     return Salon(
@@ -23,6 +27,8 @@ class Salon {
       contactNumber: data['contactNumber'],
       businessRegistration: data['businessRegistration'],
       logoUrl: data['logoUrl'],
+      uid: data['uid'],
+      id: data['id'],
     );
   }
 }

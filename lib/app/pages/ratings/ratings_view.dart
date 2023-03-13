@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/data/ratings_repository.dart';
+import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/domain/entities/rating.dart';
 
 class RatingsView extends StatefulWidget {
@@ -14,8 +15,10 @@ class _RatingsViewState extends State<RatingsView> {
 
   void getRatings() async {
     final ratings =
-        await RatingsRepository().getRatingsByUid('zRxgVCS8g4R75FxYVFmd');
-    _ratings = ratings;
+        await RatingsRepository().getRatingsByUid(SalonRepository.salon!.id);
+    setState(() {
+      _ratings = ratings;
+    });
   }
 
   @override
