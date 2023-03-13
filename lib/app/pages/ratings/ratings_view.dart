@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/data/ratings_repository.dart';
+import 'package:salon_app/domain/entities/rating.dart';
 
 class RatingsView extends StatefulWidget {
   const RatingsView({super.key});
@@ -8,6 +10,20 @@ class RatingsView extends StatefulWidget {
 }
 
 class _RatingsViewState extends State<RatingsView> {
+  List<Rating> _ratings = [];
+
+  void getRatings() async {
+    final ratings =
+        await RatingsRepository().getRatingsByUid('zRxgVCS8g4R75FxYVFmd');
+    _ratings = ratings;
+  }
+
+  @override
+  void initState() {
+    getRatings();
+    super.initState();
+  }
+
   void handleBack() {
     Navigator.of(context).pop();
   }
@@ -49,12 +65,74 @@ class _RatingsViewState extends State<RatingsView> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 15.0),
+                  ..._ratings
+                      .map(
+                        (rating) => RatingColumn(
+                          review: rating.review,
+                          star: rating.star,
+                        ),
+                      )
+                      .toList(),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class RatingColumn extends StatelessWidget {
+  const RatingColumn({
+    super.key,
+    required this.review,
+    required this.star,
+  });
+  final String review;
+  final String star;
+  @override
+  Widget build(BuildContext context) {
+    final starNo = int.parse(star);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 15.0),
+        Row(
+          children: [
+            Icon(
+              Icons.star,
+              size: 14.0,
+              color: starNo >= 1 ? const Color(0xFFC93480) : Colors.black54,
+            ),
+            Icon(
+              Icons.star,
+              size: 14.0,
+              color: starNo >= 2 ? const Color(0xFFC93480) : Colors.black54,
+            ),
+            Icon(
+              Icons.star,
+              size: 14.0,
+              color: starNo >= 3 ? const Color(0xFFC93480) : Colors.black54,
+            ),
+            Icon(
+              Icons.star,
+              size: 14.0,
+              color: starNo >= 4 ? const Color(0xFFC93480) : Colors.black54,
+            ),
+            Icon(
+              Icons.star,
+              size: 14.0,
+              color: starNo >= 5 ? const Color(0xFFC93480) : Colors.black54,
+            ),
+          ],
+        ),
+        const SizedBox(height: 10.0),
+        Text(review, textAlign: TextAlign.left),
+        const SizedBox(height: 15.0),
+        const Divider(),
+      ],
     );
   }
 }
