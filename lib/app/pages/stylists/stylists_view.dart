@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/stylists/stylists_add_view.dart';
 import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
@@ -31,6 +32,15 @@ class _StylistsViewState extends State<StylistsView> {
     Navigator.of(context).pop();
   }
 
+  void handleAdd() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const StylistsAddView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,21 +59,34 @@ class _StylistsViewState extends State<StylistsView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: handleBack,
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Color(0xFFC93480),
+                              size: 28.0,
+                            ),
+                          ),
+                          const Text(
+                            'Stylists',
+                            style: TextStyle(
+                              color: Color(0xFFC93480),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                        ],
+                      ),
                       IconButton(
-                        onPressed: handleBack,
+                        onPressed: handleAdd,
                         icon: const Icon(
-                          Icons.arrow_back,
+                          Icons.add,
                           color: Color(0xFFC93480),
                           size: 28.0,
-                        ),
-                      ),
-                      const Text(
-                        'Stylists',
-                        style: TextStyle(
-                          color: Color(0xFFC93480),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
                         ),
                       ),
                     ],
