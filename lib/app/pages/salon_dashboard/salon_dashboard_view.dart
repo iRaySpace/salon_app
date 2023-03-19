@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/appointments/appointments_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/ratings/ratings_view.dart';
 import 'package:salon_app/app/pages/salon_dashboard/widgets/dashboard_card.dart';
@@ -64,6 +65,15 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
     );
   }
 
+  void handleAppointments() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AppointmentsView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +107,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                       const SizedBox(height: 25.0),
                       DashboardCard(
                         title: 'View Appointments',
-                        onTap: () {},
+                        onTap: handleAppointments,
                       ),
                       DashboardCard(
                         title: 'Manage Services',
