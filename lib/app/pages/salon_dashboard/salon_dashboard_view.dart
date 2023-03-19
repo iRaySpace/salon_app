@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/ratings/ratings_view.dart';
 import 'package:salon_app/app/pages/salon_dashboard/widgets/dashboard_card.dart';
+import 'package:salon_app/app/pages/schedule/schedule_view.dart';
 import 'package:salon_app/app/pages/services/services_view.dart';
 import 'package:salon_app/app/pages/stylists/stylists_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
@@ -50,6 +51,15 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
       context,
       MaterialPageRoute(
         builder: (context) => const ServicesView(),
+      ),
+    );
+  }
+
+  void handleSchedule() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ScheduleView(),
       ),
     );
   }
@@ -103,7 +113,7 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                       ),
                       DashboardCard(
                         title: 'Manage Schedule',
-                        onTap: () {},
+                        onTap: handleSchedule,
                       ),
                       const SizedBox(height: 25.0),
                       AppElevatedButton(
