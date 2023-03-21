@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/salons/widgets/salon_card.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
+import 'package:salon_app/data/salon_repository.dart';
 
 class SalonsView extends StatefulWidget {
   const SalonsView({super.key});
@@ -10,6 +11,20 @@ class SalonsView extends StatefulWidget {
 }
 
 class _SalonsViewState extends State<SalonsView> {
+  List salonList =[];
+
+  Future<void> getSalons() async {
+    final salons = await SalonRepository().getSalons();
+    setState(() {
+      salonList = salons;
+    });
+  }
+
+  @override
+  void initState() {
+    getSalons();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

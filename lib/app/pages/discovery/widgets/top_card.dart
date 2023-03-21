@@ -3,7 +3,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class TopCard extends StatelessWidget {
-  const TopCard({super.key});
+  const TopCard({super.key,this.urlLogo});
+  final String? urlLogo;
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class TopCard extends StatelessWidget {
           color: Color(0xFFC93480),
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
-        child: const Text(""),
+        child: Image.network(urlLogo!),
       ),
     );
   }

@@ -12,9 +12,13 @@ class DiscoveryView extends StatefulWidget {
 }
 
 class _DiscoveryViewState extends State<DiscoveryView> {
+  List salonList =[];
+
   Future<void> getSalons() async {
     final salons = await SalonRepository().getSalons();
-    print(salons);
+    setState(() {
+      salonList = salons;
+    });
   }
 
   @override
@@ -36,15 +40,13 @@ class _DiscoveryViewState extends State<DiscoveryView> {
                 const SizedBox(height: 56.0),
                 Container(
                   height: 128.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      DiscoveryCard(),
-                      DiscoveryCard(),
-                      DiscoveryCard()
-                    ],
-                  ),
-                ),
+                  child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(8),
+                  itemCount: salonList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return DiscoveryCard(urlLogo:salonList[index].logoUrl);
+                    })),
                 const SizedBox(height: 28.0),
                 Container(
                   width: double.infinity,
@@ -63,32 +65,16 @@ class _DiscoveryViewState extends State<DiscoveryView> {
                           fontSize: 21.0,
                         ),
                       ),
-                      SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TopCard(),
-                          SizedBox(width: 10.0),
-                          TopCard(),
-                        ],
-                      ),
-                      SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TopCard(),
-                          SizedBox(width: 10.0),
-                          TopCard(),
-                        ],
-                      ),
-                      SizedBox(height: 25.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TopCard(),
-                          SizedBox(width: 10.0),
-                          TopCard(),
-                        ],
+                  SizedBox(height: 20,),
+                   GridView.count(
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                      crossAxisCount: 2,
+                      children: List.generate(salonList.length, (index) {
+                        return TopCard(urlLogo:salonList[index].logoUrl);
+                      }),
                       ),
                     ],
                   ),

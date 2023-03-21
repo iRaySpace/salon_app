@@ -3,7 +3,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class DiscoveryCard extends StatelessWidget {
-  const DiscoveryCard({super.key});
+  const DiscoveryCard({super.key,this.urlLogo});
+  final String? urlLogo;
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,8 @@ class DiscoveryCard extends StatelessWidget {
       child: Container(
         width: 156.0,
         height: 128.0,
-        child: const Text(""),
+        child: Image.network(urlLogo!),
+        
       ),
     );
   }
