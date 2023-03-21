@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/appointment_info/appointment_info_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 
 class SalonDetailView extends StatefulWidget {
@@ -9,6 +10,15 @@ class SalonDetailView extends StatefulWidget {
 }
 
 class _SalonDetailViewState extends State<SalonDetailView> {
+  void handleMake() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AppointmentInfoView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +33,7 @@ class _SalonDetailViewState extends State<SalonDetailView> {
                 const SizedBox(height: 56.0),
                 const SizedBox(height: 28.0),
                 AppElevatedButton(
-                  onPressed: () {},
+                  onPressed: handleMake,
                   child: Text('Make Appointment'),
                 ),
                 const SizedBox(height: 14.0),
