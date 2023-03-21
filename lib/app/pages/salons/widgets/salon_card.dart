@@ -4,9 +4,10 @@ class SalonCard extends StatelessWidget {
   const SalonCard({
     super.key,
     required this.title,
+    required this.urlLogo,
   });
 
-  final String title;
+  final String title,urlLogo;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,7 @@ class SalonCard extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
+                child:  Image.network(urlLogo),
                 ),
                 SizedBox(width: 15.0),
                 Text(

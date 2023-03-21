@@ -57,9 +57,18 @@ class _SalonsViewState extends State<SalonsView> {
               ),
             ),
             const SizedBox(height: 25.0),
-            SalonCard(title: 'A'),
-            SalonCard(title: 'B'),
-            SalonCard(title: 'C'),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(), 
+                padding: const EdgeInsets.all(8),
+                itemCount: salonList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SalonCard(
+                    title: salonList[index].salonName,
+                    urlLogo: salonList[index].logoUrl,
+                  );
+                }
+              ),
           ],
         ),
       ),
