@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/appointment_info/appointment_info_successful_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/signup/signup_successful_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
@@ -74,7 +75,7 @@ class _SignupViewState extends State<SignupView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const SignupSuccessfulView(),
+            builder: (context) => const AppointmentInfoSuccessfulView(),
           ),
         );
       } on FirebaseAuthException catch (e) {

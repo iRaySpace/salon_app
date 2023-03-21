@@ -34,4 +34,16 @@ class Appointment {
       id: data['id'],
     );
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'date': date,
+      'email': email,
+      'name': name,
+      'salonId': salonId,
+      'service': service,
+      'stylist': stylist,
+      'time': time,
+    };
+  }
 }

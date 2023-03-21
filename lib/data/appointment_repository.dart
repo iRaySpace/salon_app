@@ -14,4 +14,12 @@ class AppointmentRepository {
     }
     return data;
   }
+
+  Future<Appointment> addAppointment(Appointment appointment) async {
+    await FirebaseFirestore.instance.collection("Appointment").add({
+      'createdAt': Timestamp.now(),
+      ...appointment.toJSON(),
+    });
+    return appointment;
+  }
 }
