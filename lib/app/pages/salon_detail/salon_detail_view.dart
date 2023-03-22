@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
-import 'package:salon_app/data/salon_repository.dart';
+// import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/schedule_repository.dart';
 import 'package:salon_app/domain/entities/salon.dart';
 import 'package:salon_app/domain/entities/schedule.dart';
 
 class SalonDetailView extends StatefulWidget {
-  const SalonDetailView({super.key});
-
+  const SalonDetailView({super.key, required this.salon});
+  final Salon salon;
   @override
   State<SalonDetailView> createState() => _SalonDetailViewState();
 }
 
 class _SalonDetailViewState extends State<SalonDetailView> {
-  Salon? _salon;
   Schedule? _schedule;
 
   void loadSalon() async {
-    final salon =
-        await SalonRepository().getSalonByUid('hxnx1o1c2xd9u6N3QN7ggp1m1i53');
-    final schedule = await ScheduleRepository().getScheduleByUid(salon.id);
+    final schedule =
+        await ScheduleRepository().getScheduleByUid(widget.salon.id);
     setState(() {
-      _salon = salon;
       _schedule = schedule;
     });
   }
@@ -72,18 +69,21 @@ class _SalonDetailViewState extends State<SalonDetailView> {
                         size: 28.0,
                       ),
                     ),
-                    Text(
-                      _salon?.salonName ?? 'Salon',
-                      style: const TextStyle(
-                        color: Color(0xFFC93480),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
+                    Expanded(
+                      child: Text(
+                        widget.salon.salonName,
+                        style: const TextStyle(
+                          color: Color(0xFFC93480),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 25.0),
-                if (_salon != null) Image.network(_salon!.logoUrl),
+                Image.network(widget.salon.logoUrl),
                 const SizedBox(height: 25.0),
                 AppElevatedButton(
                   onPressed: handleMake,

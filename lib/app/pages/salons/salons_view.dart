@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/salon_detail/salon_detail_view.dart';
 import 'package:salon_app/app/pages/salons/widgets/salon_card.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
 import 'package:salon_app/data/salon_repository.dart';
@@ -26,7 +27,14 @@ class _SalonsViewState extends State<SalonsView> {
     getSalons();
   }
 
-  void handleTap(Salon salon) {}
+  void handleTap(Salon salon) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SalonDetailView(salon: salon),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
