@@ -3,7 +3,7 @@ import 'package:salon_app/domain/entities/customer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
-  static Customer? customer;
+  static Customer? customer; // for auth purposes
 
   Future<UserCredential> signup(Customer customer, String password) async {
     final credential =

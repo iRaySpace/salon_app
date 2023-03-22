@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salon_app/domain/entities/salon.dart';
 
 class SalonRepository {
-  static Salon? salon;
+  static Salon? salon; // for auth purposes
 
   Future<List<dynamic>> getSalons() async {
     final salons = await FirebaseFirestore.instance.collection("salon").get();
     final data = [];
-    salons.docs.forEach((salon) {
+    for (final salon in salons.docs) {
       final salonData = salon.data();
       final laaganTrainee = Salon.fromJson({...salonData, 'id': salon.id});
       data.add(laaganTrainee);
-    });
+    }
     return data;
   }
 

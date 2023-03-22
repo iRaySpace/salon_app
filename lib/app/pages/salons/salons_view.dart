@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/salons/widgets/salon_card.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
 import 'package:salon_app/data/salon_repository.dart';
+import 'package:salon_app/domain/entities/salon.dart';
 
 class SalonsView extends StatefulWidget {
   const SalonsView({super.key});
@@ -24,6 +25,8 @@ class _SalonsViewState extends State<SalonsView> {
   void initState() {
     getSalons();
   }
+
+  void handleTap(Salon salon) {}
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +63,14 @@ class _SalonsViewState extends State<SalonsView> {
               const SizedBox(height: 25.0),
               ListView.builder(
                   shrinkWrap: true,
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   itemCount: salonList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return SalonCard(
                       title: salonList[index].salonName,
                       urlLogo: salonList[index].logoUrl,
+                      onTap: () => handleTap(salonList[index]),
                     );
                   }),
             ],
