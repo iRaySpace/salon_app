@@ -5,6 +5,8 @@ import 'package:salon_app/app/pages/salon_signup/salon_signup_view.dart';
 import 'package:salon_app/app/pages/signin/signin_view.dart';
 import 'package:salon_app/app/pages/signup/signup_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
+import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/domain/entities/customer.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -14,6 +16,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  Customer? customer = AuthRepository.customer;
+
   void handleSignup() {
     Navigator.push(
       context,
@@ -74,6 +78,25 @@ class NewProfileColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 56.0),
+        const Text(
+          "BEAUtify with SalonBeau!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            color: Color(0xFFC93480),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        const Text(
+          "Get started by creating your account",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.black54,
+          ),
+        ),
+        const SizedBox(height: 35.0),
         AppElevatedButton(
           onPressed: handleLogin,
           child: const Text(
