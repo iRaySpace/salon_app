@@ -41,4 +41,26 @@ class AuthRepository {
     AuthRepository.customer = customer;
     return customer;
   }
+
+  Future<void> reload() async {
+    final user = await FirebaseAuth.instance.authStateChanges().first;
+    if (user != null) {
+      final customerSnapshot = (await FirebaseFirestore.instance
+              .collection("customer")
+              .where("uid", isEqualTo: user.uid)
+              .get())
+          .docs
+          .first;
+      final customerData = customerSnapshot.data();
+      final customer = Customer(
+        uid: customerData['uid'],
+        email: customerData['email'],
+        firstName: customerData['firstName'],
+        lastName: customerData['lastName'],
+        type: customerData['type'],
+        gender: '',
+      );
+      AuthRepository.customer = customer;
+    }
+  }
 }

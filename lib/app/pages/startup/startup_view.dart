@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:salon_app/app/pages/discovery/discovery_view.dart';
+import 'package:salon_app/data/auth_repository.dart';
 
 class StartupView extends StatefulWidget {
   const StartupView({super.key});
@@ -13,17 +14,13 @@ class _StartupViewState extends State<StartupView> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(
-        const Duration(seconds: 3),
-        () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const DiscoveryView(),
-            ),
-          );
-        },
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await AuthRepository().reload();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const DiscoveryView(),
+        ),
       );
     });
   }
