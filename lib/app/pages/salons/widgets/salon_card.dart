@@ -7,7 +7,7 @@ class SalonCard extends StatelessWidget {
     required this.urlLogo,
   });
 
-  final String title,urlLogo;
+  final String title, urlLogo;
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +27,33 @@ class SalonCard extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                    child: Image.network(urlLogo),
                   ),
-                child:  Image.network(urlLogo),
-                ),
-                SizedBox(width: 15.0),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
+                  const SizedBox(width: 15.0),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Row(
               children: const [
