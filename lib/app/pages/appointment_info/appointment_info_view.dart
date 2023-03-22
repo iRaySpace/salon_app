@@ -6,12 +6,13 @@ import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/service_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
+import 'package:salon_app/domain/entities/salon.dart';
 import 'package:salon_app/domain/entities/service.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
 
 class AppointmentInfoView extends StatefulWidget {
-  const AppointmentInfoView({super.key});
-
+  const AppointmentInfoView({super.key, required this.salon});
+  final Salon salon;
   @override
   State<AppointmentInfoView> createState() => _AppointmentInfoViewState();
 }
@@ -31,9 +32,9 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
 
   void loadData() async {
     final services =
-        await ServiceRepository().getServicesByUid('YS6Nd8hZtB5QlPWtHE0D');
+        await ServiceRepository().getServicesByUid(widget.salon.id);
     final stylists =
-        await StylistRepository().getStylistsByUid('YS6Nd8hZtB5QlPWtHE0D');
+        await StylistRepository().getStylistsByUid(widget.salon.id);
     setState(() {
       _services = services;
       _stylists = stylists;

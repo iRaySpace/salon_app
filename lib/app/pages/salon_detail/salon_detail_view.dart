@@ -39,7 +39,7 @@ class _SalonDetailViewState extends State<SalonDetailView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const AppointmentInfoView(),
+        builder: (context) => AppointmentInfoView(salon: widget.salon),
       ),
     );
   }
