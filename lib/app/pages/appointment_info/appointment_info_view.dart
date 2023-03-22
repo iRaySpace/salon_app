@@ -21,6 +21,7 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
   List<Stylist> _stylists = [];
 
   final _nameController = TextEditingController(text: 'Test');
+  final _emailController = TextEditingController(text: 'test@test.com');
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
 
@@ -186,6 +187,23 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                                 decoration: const InputDecoration(
                                   border: UnderlineInputBorder(),
                                   labelText: 'Name',
+                                ),
+                              ),
+                              const SizedBox(height: 5.0),
+                              TextFormField(
+                                enabled: false,
+                                controller: _emailController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please input email';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (newValue) =>
+                                    _data['email'] = newValue!,
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Email',
                                 ),
                               ),
                               const SizedBox(height: 5.0),
