@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/appointments/appointments_view.dart';
+import 'package:salon_app/app/pages/logout/logout_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/ratings/ratings_view.dart';
 import 'package:salon_app/app/pages/salon_dashboard/widgets/dashboard_card.dart';
 import 'package:salon_app/app/pages/schedule/schedule_view.dart';
 import 'package:salon_app/app/pages/services/services_view.dart';
 import 'package:salon_app/app/pages/stylists/stylists_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/customer_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
@@ -74,6 +76,17 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
     );
   }
 
+  void handleLogout() async {
+    showLogoutDialog(context, () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LogoutView(),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,10 +98,9 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 56.0),
-                const SizedBox(height: 28.0),
                 Container(
                   width: double.infinity,
+                  margin: const EdgeInsets.all(25.0),
                   padding: const EdgeInsets.all(25.0),
                   decoration: const BoxDecoration(
                     color: Color(0xFFFBADD1),
@@ -127,8 +139,8 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                       ),
                       const SizedBox(height: 25.0),
                       AppElevatedButton(
-                        onPressed: () {},
-                        child: Text('Logout'),
+                        onPressed: handleLogout,
+                        child: const Text('Logout'),
                       ),
                     ],
                   ),

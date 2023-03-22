@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/logout/logout_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
 import 'package:salon_app/app/pages/salon_signup/salon_signup_view.dart';
 import 'package:salon_app/app/pages/signin/signin_view.dart';
 import 'package:salon_app/app/pages/signup/signup_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/domain/entities/customer.dart';
+import 'package:salon_app/domain/entities/salon.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -36,6 +39,50 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
+  void handleLogout() async {
+    await AuthRepository().logout();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LogoutView(),
+      ),
+    );
+  }
+
+  void handleSalon() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SalonDashboardView(),
+      ),
+    );
+  }
+
+  Widget getColumn() {
+    if (customer == null) {
+      return NewProfileColumn(
+        handleLogin: handleLogin,
+        handleSignup: handleSignup,
+      );
+    }
+    if (customer?.type == Customer.salonType) {
+      return SalonProfileColumn(
+        onLogout: () {
+          showLogoutDialog(context, () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LogoutView(),
+              ),
+            );
+          });
+        },
+        onSalon: handleSalon,
+      );
+    }
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,10 +94,7 @@ class _ProfileViewState extends State<ProfileView> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(25.0),
-              child: NewProfileColumn(
-                handleLogin: handleLogin,
-                handleSignup: handleSignup,
-              ),
+              child: getColumn(),
             ),
           ),
         ),
@@ -112,6 +156,67 @@ class NewProfileColumn extends StatelessWidget {
           onPressed: handleSignup,
           child: const Text(
             'Sign Up',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SalonProfileColumn extends StatelessWidget {
+  const SalonProfileColumn({
+    super.key,
+    required this.onSalon,
+    required this.onLogout,
+  });
+
+  final Function() onSalon;
+  final Function() onLogout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 56.0),
+        const Text(
+          'Welcome, ka-SalonBeau!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            color: Color(0xFFC93480),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        const Text(
+          "Check how your Salon is doing!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.black54,
+          ),
+        ),
+        const SizedBox(height: 35.0),
+        AppElevatedButton(
+          onPressed: onSalon,
+          child: const Text(
+            "Your Salon",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+        AppElevatedButton(
+          onPressed: onLogout,
+          child: const Text(
+            'Logout',
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,

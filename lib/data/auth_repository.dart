@@ -63,4 +63,9 @@ class AuthRepository {
       AuthRepository.customer = customer;
     }
   }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    AuthRepository.customer = null;
+  }
 }
