@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/app/pages/appointment_schedules/appointment_schedules_view.dart';
 import 'package:salon_app/app/pages/logout/logout_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
@@ -58,6 +59,24 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
+  void handleAppointments() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AppointmentSchedulesView(),
+      ),
+    );
+  }
+
+  void handleSalonSignup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SalonSignupView(),
+      ),
+    );
+  }
+
   Widget getColumn() {
     if (customer == null) {
       return NewProfileColumn(
@@ -78,6 +97,13 @@ class _ProfileViewState extends State<ProfileView> {
           });
         },
         onSalon: handleSalon,
+      );
+    }
+    if (customer?.type == Customer.customerType) {
+      return CustomerProfileColumn(
+        onSalonSignup: handleSalonSignup,
+        onAppointments: handleAppointments,
+        onLogout: handleLogout,
       );
     }
     return Container();
@@ -206,6 +232,80 @@ class SalonProfileColumn extends StatelessWidget {
           onPressed: onSalon,
           child: const Text(
             "Your Salon",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+        AppElevatedButton(
+          onPressed: onLogout,
+          child: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CustomerProfileColumn extends StatelessWidget {
+  const CustomerProfileColumn({
+    super.key,
+    required this.onSalonSignup,
+    required this.onAppointments,
+    required this.onLogout,
+  });
+
+  final Function() onSalonSignup;
+  final Function() onAppointments;
+  final Function() onLogout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 56.0),
+        const Text(
+          "Welcome to SalonBeau!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 28.0,
+            color: Color(0xFFC93480),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        const Text(
+          "Get started now",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Colors.black54,
+          ),
+        ),
+        const SizedBox(height: 35.0),
+        AppElevatedButton(
+          onPressed: onSalonSignup,
+          child: const Text(
+            "Start your Salon's Journey",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+        AppElevatedButton(
+          onPressed: onAppointments,
+          child: const Text(
+            "My Appointments",
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,

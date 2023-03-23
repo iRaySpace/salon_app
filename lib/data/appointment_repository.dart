@@ -15,6 +15,19 @@ class AppointmentRepository {
     return data;
   }
 
+  Future<List<Appointment>> getAppointmentsByEmail(email) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("Appointment")
+        .where('email', isEqualTo: email)
+        .get();
+    final List<Appointment> data = [];
+    for (final doc in snapshot.docs) {
+      final docData = doc.data();
+      data.add(Appointment.fromJson({...docData, 'id': doc.id}));
+    }
+    return data;
+  }
+
   Future<Appointment> addAppointment(Appointment appointment) async {
     await FirebaseFirestore.instance.collection("Appointment").add({
       'createdAt': Timestamp.now(),
