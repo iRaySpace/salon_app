@@ -9,7 +9,7 @@ import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/domain/entities/customer.dart';
 import 'package:salon_app/domain/entities/salon.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SalonSignupView extends StatefulWidget {
   const SalonSignupView({super.key});
@@ -48,7 +48,6 @@ class _SalonSignupViewState extends State<SalonSignupView> {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -70,6 +69,12 @@ class _SalonSignupViewState extends State<SalonSignupView> {
       );
 
       try {
+        final firebase_storage.Reference ref =
+            firebase_storage.FirebaseStorage.instance.ref().child("images/$_fileName");
+        final firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
+        final snapshot = await uploadTask.whenComplete(() {});
+        final String url = await snapshot.ref.getDownloadURL();
+        print('File uploaded to $url');
         final contactNumber = int.parse(_data['contactNumber']);
         await SalonRepository().addSalon(
           Salon(
@@ -95,11 +100,11 @@ class _SalonSignupViewState extends State<SalonSignupView> {
   }
 
   void handleUpload() async {
-    final pickedFile =  await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        String fileName = File(pickedFile.path).path.split("image_picker").last;
+        String fileName = File(pickedFile.path).path.split('/').last;
         _fileName = fileName;
       } else {
         print('No image selected.');
@@ -206,11 +211,13 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                               ),
                             ),
                             const SizedBox(height: 15.0),
-                         _image == null? Container():Image.file(
-                                  _image!,
-                                  height: 200,
-                                  fit: BoxFit.fitHeight,
-                                ),
+                            _image == null
+                                ? Container()
+                                : Image.file(
+                                    _image!,
+                                    height: 200,
+                                    fit: BoxFit.fitHeight,
+                                  ),
                             const SizedBox(height: 15.0),
                             AppElevatedButton(
                               onPressed: handleUpload,
