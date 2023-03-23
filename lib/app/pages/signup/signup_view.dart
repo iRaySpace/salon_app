@@ -75,7 +75,7 @@ class _SignupViewState extends State<SignupView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const AppointmentInfoSuccessfulView(),
+            builder: (context) => const SignupSuccessfulView(),
           ),
         );
       } on FirebaseAuthException catch (e) {
