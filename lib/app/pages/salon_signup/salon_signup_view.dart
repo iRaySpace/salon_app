@@ -9,6 +9,10 @@ class SalonSignupView extends StatefulWidget {
 }
 
 class _SalonSignupViewState extends State<SalonSignupView> {
+  void handleSignup() {}
+
+  void handleUpload() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +67,10 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                               labelText: 'Business Registration',
                             ),
                           ),
-                          SizedBox(height: 15.0),
+                          const SizedBox(height: 15.0),
                           AppElevatedButton(
-                            onPressed: () {},
-                            child: Text('Upload Logo'),
+                            onPressed: handleUpload,
+                            child: const Text('Upload Logo'),
                           ),
                         ],
                       ),
@@ -80,12 +84,12 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                         value: false,
                         onChanged: (e) {},
                       ),
-                      Text('I agree in all terms and conditions'),
+                      const Text('I agree in all terms and conditions'),
                     ],
                   ),
                   AppElevatedButton(
-                    onPressed: () {},
-                    child: Text('Start your journey'),
+                    onPressed: handleSignup,
+                    child: const Text('Start your journey'),
                   ),
                 ],
               ),
