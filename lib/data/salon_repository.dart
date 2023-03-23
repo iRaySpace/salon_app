@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:salon_app/domain/entities/customer.dart';
 import 'package:salon_app/domain/entities/salon.dart';
 
 class SalonRepository {
@@ -27,12 +28,21 @@ class SalonRepository {
     return salon;
   }
 
-  Future<Salon> addSalon(Salon salon, uid) async {
+  Future<Salon> addSalon(Salon salon) async {
     await FirebaseFirestore.instance.collection("salon").add({
       'createdAt': Timestamp.now(),
-      'uid': uid,
       ...salon.toJSON(),
     });
+    final customerSnapshot = (await FirebaseFirestore.instance
+            .collection("customer")
+            .where("uid", isEqualTo: salon.uid)
+            .get())
+        .docs
+        .first;
+    await customerSnapshot.reference.set(
+      {'type': Customer.salonType},
+      SetOptions(merge: true),
+    );
     return salon;
   }
 }

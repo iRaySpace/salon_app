@@ -6,6 +6,7 @@ class Customer {
     required this.gender,
     required this.type,
     this.uid,
+    this.id,
   });
 
   final String email;
@@ -15,6 +16,7 @@ class Customer {
   final String type;
 
   final String? uid;
+  final String? id;
 
   static const customerType = 'customer';
   static const salonType = 'salon';

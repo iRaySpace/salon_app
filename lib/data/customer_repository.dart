@@ -11,7 +11,8 @@ class CustomerRepository {
         .first;
     final data = customer.data();
     return Customer(
-      uid: customer.id,
+      id: customer.id,
+      uid: data['uid'],
       email: data['email'],
       firstName: data['firstName'],
       lastName: data['lastName'],

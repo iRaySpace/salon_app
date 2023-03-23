@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/salon_signup/salon_signup_successful_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
+import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/data/salon_repository.dart';
+import 'package:salon_app/domain/entities/customer.dart';
+import 'package:salon_app/domain/entities/salon.dart';
 
 class SalonSignupView extends StatefulWidget {
   const SalonSignupView({super.key});
@@ -9,7 +16,78 @@ class SalonSignupView extends StatefulWidget {
 }
 
 class _SalonSignupViewState extends State<SalonSignupView> {
-  void handleSignup() {}
+  final Customer _customer = AuthRepository.customer!;
+
+  final _formKey = GlobalKey<FormState>();
+  final Map<String, dynamic> _data = {};
+
+  final _emailController = TextEditingController();
+
+  bool _termsAndConditions = false;
+
+  @override
+  void initState() {
+    _emailController.text = _customer.email;
+    super.initState();
+  }
+
+  void handleSignup() async {
+    if (!_termsAndConditions) {
+      showOkDialog(
+        context: context,
+        titleText: 'Terms and Conditions',
+        contentText: 'Please read and tick the terms and conditions',
+      );
+      return;
+    }
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text('Creating a Salon'),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      try {
+        final contactNumber = int.parse(_data['contactNumber']);
+        await SalonRepository().addSalon(
+          Salon(
+            salonName: _data['salonName'],
+            salonLocation: _data['salonName'],
+            businessRegistration: _data['businessRegistration'],
+            email: _data['email'],
+            logoUrl: '',
+            contactNumber: contactNumber,
+            uid: _customer.uid,
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SalonSignupSuccessfulView(),
+          ),
+        );
+      } catch (e) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
 
   void handleUpload() {}
 
@@ -83,6 +161,8 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                               keyboardType: TextInputType.number,
                             ),
                             TextFormField(
+                              enabled: false,
+                              controller: _emailController,
                               onSaved: (newValue) => _data['email'] = newValue!,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {

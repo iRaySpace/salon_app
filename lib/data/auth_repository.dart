@@ -31,12 +31,13 @@ class AuthRepository {
         .first;
     final customerData = customerSnapshot.data();
     final customer = Customer(
+      id: customerSnapshot.id,
       uid: customerData['uid'],
       email: customerData['email'],
       firstName: customerData['firstName'],
       lastName: customerData['lastName'],
       type: customerData['type'],
-      gender: '',
+      gender: customerData['gender'] ?? '',
     );
     AuthRepository.customer = customer;
     return customer;
@@ -53,12 +54,13 @@ class AuthRepository {
           .first;
       final customerData = customerSnapshot.data();
       final customer = Customer(
+        id: customerSnapshot.id,
         uid: customerData['uid'],
         email: customerData['email'],
         firstName: customerData['firstName'],
         lastName: customerData['lastName'],
         type: customerData['type'],
-        gender: '',
+        gender: customerData['gender'] ?? '',
       );
       AuthRepository.customer = customer;
     }
