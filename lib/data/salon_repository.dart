@@ -26,4 +26,13 @@ class SalonRepository {
     SalonRepository.salon = salon;
     return salon;
   }
+
+  Future<Salon> addSalon(Salon salon, uid) async {
+    await FirebaseFirestore.instance.collection("salon").add({
+      'createdAt': Timestamp.now(),
+      'uid': uid,
+      ...salon.toJSON(),
+    });
+    return salon;
+  }
 }

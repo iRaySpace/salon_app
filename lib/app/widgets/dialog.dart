@@ -50,3 +50,29 @@ showLogoutDialog(BuildContext context, Function() onContinue) {
     },
   );
 }
+
+showOkDialog({
+  required BuildContext context,
+  required String titleText,
+  required String contentText,
+}) {
+  Widget okButton = TextButton(
+    onPressed: () => Navigator.of(context).pop(),
+    child: const Text("Ok"),
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(titleText),
+    content: Text(contentText),
+    actions: [okButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

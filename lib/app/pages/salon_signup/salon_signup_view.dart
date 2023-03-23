@@ -35,44 +35,87 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(25.0),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Salon Name',
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              onSaved: (newValue) =>
+                                  _data['salonName'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input salon name';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Salon Name',
+                              ),
                             ),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Address',
+                            TextFormField(
+                              onSaved: (newValue) =>
+                                  _data['salonLocation'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input address';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Address',
+                              ),
                             ),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Mobile Number',
+                            TextFormField(
+                              onSaved: (newValue) =>
+                                  _data['contactNumber'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input contact number';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Contact Number',
+                              ),
+                              keyboardType: TextInputType.number,
                             ),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Email',
+                            TextFormField(
+                              onSaved: (newValue) => _data['email'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input email';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Email',
+                              ),
                             ),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Business Registration',
+                            TextFormField(
+                              onSaved: (newValue) =>
+                                  _data['businessRegistration'] = newValue!,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please input business registration';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Business Registration',
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 15.0),
-                          AppElevatedButton(
-                            onPressed: handleUpload,
-                            child: const Text('Upload Logo'),
-                          ),
-                        ],
+                            const SizedBox(height: 15.0),
+                            AppElevatedButton(
+                              onPressed: handleUpload,
+                              child: const Text('Upload Logo'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -81,8 +124,12 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Checkbox(
-                        value: false,
-                        onChanged: (e) {},
+                        value: _termsAndConditions,
+                        onChanged: (e) => setState(() {
+                          if (e != null) {
+                            _termsAndConditions = e;
+                          }
+                        }),
                       ),
                       const Text('I agree in all terms and conditions'),
                     ],

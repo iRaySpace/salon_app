@@ -6,8 +6,8 @@ class Salon {
     required this.contactNumber,
     required this.businessRegistration,
     required this.logoUrl,
-    required this.uid,
-    required this.id,
+    this.uid,
+    this.id,
   });
 
   final String salonName;
@@ -16,6 +16,7 @@ class Salon {
   final int contactNumber;
   final String businessRegistration;
   final String logoUrl;
+
   final String? uid;
   final String? id;
 
@@ -30,5 +31,16 @@ class Salon {
       uid: data['uid'],
       id: data['id'],
     );
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'businessRegistration': businessRegistration,
+      'contactNumber': contactNumber,
+      'email': email,
+      'logoUrl': logoUrl,
+      'salonLocation': salonLocation,
+      'salonName': salonName,
+    };
   }
 }
