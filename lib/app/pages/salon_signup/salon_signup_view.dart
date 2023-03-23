@@ -82,7 +82,7 @@ class _SalonSignupViewState extends State<SalonSignupView> {
             salonLocation: _data['salonName'],
             businessRegistration: _data['businessRegistration'],
             email: _data['email'],
-            logoUrl: '',
+            logoUrl: url,
             contactNumber: contactNumber,
             uid: _customer.uid,
           ),
