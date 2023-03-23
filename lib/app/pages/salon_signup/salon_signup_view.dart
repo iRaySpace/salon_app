@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_signup/salon_signup_successful_view.dart';
 import 'package:salon_app/app/widgets/dialog.dart';
@@ -7,6 +9,7 @@ import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/domain/entities/customer.dart';
 import 'package:salon_app/domain/entities/salon.dart';
+
 
 class SalonSignupView extends StatefulWidget {
   const SalonSignupView({super.key});
@@ -17,7 +20,9 @@ class SalonSignupView extends StatefulWidget {
 
 class _SalonSignupViewState extends State<SalonSignupView> {
   final Customer _customer = AuthRepository.customer!;
-
+  File? _image;
+  String? _fileName;
+  final picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _data = {};
 
@@ -89,7 +94,18 @@ class _SalonSignupViewState extends State<SalonSignupView> {
     }
   }
 
-  void handleUpload() {}
+  void handleUpload() async {
+    final pickedFile =  await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        String fileName = File(pickedFile.path).path.split("image_picker").last;
+        _fileName = fileName;
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +205,12 @@ class _SalonSignupViewState extends State<SalonSignupView> {
                                 labelText: 'Business Registration',
                               ),
                             ),
+                            const SizedBox(height: 15.0),
+                         _image == null? Container():Image.file(
+                                  _image!,
+                                  height: 200,
+                                  fit: BoxFit.fitHeight,
+                                ),
                             const SizedBox(height: 15.0),
                             AppElevatedButton(
                               onPressed: handleUpload,
