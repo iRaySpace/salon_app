@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_successful_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/salon_detail/salon_detail_view.dart';
+import 'package:salon_app/app/widgets/discovery_card.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/service_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
@@ -21,6 +24,7 @@ class AppointmentInfoView extends StatefulWidget {
 class _AppointmentInfoViewState extends State<AppointmentInfoView> {
   List<Service> _services = [];
   List<Stylist> _stylists = [];
+  List<Salon> _salons = [];
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -37,12 +41,16 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
     final stylists =
         await StylistRepository().getStylistsByUid(widget.salon.id);
 
+    var salons = await SalonRepository().getPublishedSalons();
+    salons = salons.where((salon) => salon.id != widget.salon.id).toList();
+
     final customer = AuthRepository.customer!;
     final name = '${customer.firstName} ${customer.lastName}';
     _nameController.text = name;
     _emailController.text = customer.email;
 
     setState(() {
+      _salons = salons;
       _services = services;
       _stylists = stylists;
     });
@@ -133,6 +141,15 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
     }
   }
 
+  void handleDiscoveryTap(Salon salon) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SalonDetailView(salon: salon),
+      ),
+    );
+  }
+
   void handleBack() {
     Navigator.of(context).pop();
   }
@@ -181,13 +198,15 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 56.0),
+              const SizedBox(height: 25.0),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
+                      Image.network(widget.salon.logoUrl),
+                      const SizedBox(height: 25.0),
                       Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -334,6 +353,20 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0,
+                        ),
+                      ),
+                      Container(
+                        height: 128.0,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.all(8),
+                          itemCount: _salons.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return DiscoveryCard(
+                              urlLogo: _salons[index].logoUrl,
+                              onTap: () => handleDiscoveryTap(_salons[index]),
+                            );
+                          },
                         ),
                       ),
                     ],
