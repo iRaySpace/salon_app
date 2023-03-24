@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/discovery/discovery_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
+import 'package:salon_app/app/pages/signup/signup_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/customer_repository.dart';
 import 'package:salon_app/domain/entities/customer.dart';
@@ -95,6 +96,15 @@ class _SigninViewState extends State<SigninView> {
     }
   }
 
+  void handleSignup() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SignupView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +189,7 @@ class _SigninViewState extends State<SigninView> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: handleSignup,
                     child: Text('Sign up'),
                   ),
                 ],

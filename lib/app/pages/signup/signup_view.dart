@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_successful_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/pages/signin/signin_view.dart';
 import 'package:salon_app/app/pages/signup/signup_successful_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/domain/entities/customer.dart';
@@ -91,6 +92,15 @@ class _SignupViewState extends State<SignupView> {
         print(e);
       }
     }
+  }
+
+  void handleSignIn() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SigninView(),
+      ),
+    );
   }
 
   @override
@@ -236,8 +246,8 @@ class _SignupViewState extends State<SignupView> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: Text('Sign in'),
+                      onPressed: handleSignIn,
+                      child: const Text('Sign in'),
                     ),
                   ],
                 ),
