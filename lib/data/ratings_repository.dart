@@ -2,6 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:salon_app/domain/entities/rating.dart';
 
 class RatingsRepository {
+  Future<Rating> getRatingById(id) async {
+    final feedbackSnapshot =
+        await FirebaseFirestore.instance.collection("feedback").doc(id).get();
+    final feedbackData = feedbackSnapshot.data() ?? {};
+    return Rating.fromJson({...feedbackData, 'id': feedbackSnapshot.id});
+  }
+
   Future<List<Rating>> getRatingsByUid(uid) async {
     final feedbackSnapshot = await FirebaseFirestore.instance
         .collection("feedback")

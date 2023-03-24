@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_schedules/review_add_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/data/ratings_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
 
 class AppointmentSchedulesView extends StatefulWidget {
@@ -35,7 +37,16 @@ class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
     Navigator.of(context).pop();
   }
 
-  void handleRate(Appointment appointment) {
+  void handleRate(Appointment appointment) async {
+    if (appointment.feedbackId.isNotEmpty) {
+      final feedback = await RatingsRepository().getRatingById(appointment.feedbackId);
+      showOkDialog(
+        context: context,
+        titleText: 'Stars: ${feedback.star}',
+        contentText: feedback.review,
+      );
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -197,7 +208,7 @@ class AppointmentCard extends StatelessWidget {
               children: [
                 OutlinedButton(
                   onPressed: onRate,
-                  child: const Text('Rate Appointment'),
+                  child: const Text('Review'),
                 ),
               ],
             ),

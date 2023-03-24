@@ -8,6 +8,7 @@ class Appointment {
     required this.progress,
     required this.service,
     required this.stylist,
+    this.feedbackId = '',
     this.id,
   });
 
@@ -19,6 +20,7 @@ class Appointment {
   final String progress;
   final String service;
   final String stylist;
+  final String feedbackId;
   final String? id;
 
   static fromJson(data) {
@@ -31,6 +33,7 @@ class Appointment {
       progress: data['progress'] ?? "",
       service: data['service'],
       stylist: data['stylist'] ?? "",
+      feedbackId: data['feedbackId'] ?? "",
       id: data['id'],
     );
   }
