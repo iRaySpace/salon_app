@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_successful_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/data/appointment_repository.dart';
+import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/service_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
@@ -21,8 +22,8 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
   List<Service> _services = [];
   List<Stylist> _stylists = [];
 
-  final _nameController = TextEditingController(text: 'Test');
-  final _emailController = TextEditingController(text: 'test@test.com');
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
 
@@ -35,6 +36,12 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
         await ServiceRepository().getServicesByUid(widget.salon.id);
     final stylists =
         await StylistRepository().getStylistsByUid(widget.salon.id);
+
+    final customer = AuthRepository.customer!;
+    final name = '${customer.firstName} ${customer.lastName}';
+    _nameController.text = name;
+    _emailController.text = customer.email;
+
     setState(() {
       _services = services;
       _stylists = stylists;
