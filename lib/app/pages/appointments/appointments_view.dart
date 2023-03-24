@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
-import 'package:salon_app/data/schedule_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
-import 'package:salon_app/domain/entities/schedule.dart';
 
 class AppointmentsView extends StatefulWidget {
   const AppointmentsView({super.key});
@@ -33,6 +31,28 @@ class _AppointmentsViewState extends State<AppointmentsView> {
 
   void handleBack() {
     Navigator.of(context).pop();
+  }
+
+  void handleAccept(Appointment appointment) {
+    showAlertDialog(
+      context: context,
+      titleText: 'Confirm Accept',
+      contentText: 'Are you sure you want to accept',
+      onContinue: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  void handleReject(Appointment appointment) {
+    showAlertDialog(
+      context: context,
+      titleText: 'Confirm Reject',
+      contentText: 'Are you sure you want to reject?',
+      onContinue: () {
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   @override
@@ -78,8 +98,13 @@ class _AppointmentsViewState extends State<AppointmentsView> {
                     ],
                   ),
                   const SizedBox(height: 15.0),
-                  ..._appointments
-                      .map((appointment) => AppointmentCard(data: appointment)),
+                  ..._appointments.map(
+                    (appointment) => AppointmentCard(
+                      data: appointment,
+                      onAccept: handleAccept,
+                      onReject: handleReject,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -94,9 +119,13 @@ class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     super.key,
     required this.data,
+    this.onAccept,
+    this.onReject,
   });
 
   final Appointment data;
+  final Function(Appointment)? onAccept;
+  final Function(Appointment)? onReject;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +203,20 @@ class AppointmentCard extends StatelessWidget {
                 Text(
                   data.time,
                   style: const TextStyle(color: Colors.black54),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: () => onReject?.call(data),
+                  child: const Text('Reject'),
+                ),
+                const SizedBox(width: 15.0),
+                OutlinedButton(
+                  onPressed: () => onAccept?.call(data),
+                  child: const Text('Accept'),
                 ),
               ],
             ),
