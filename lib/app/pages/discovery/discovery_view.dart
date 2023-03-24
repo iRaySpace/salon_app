@@ -15,11 +15,13 @@ class DiscoveryView extends StatefulWidget {
 
 class _DiscoveryViewState extends State<DiscoveryView> {
   List salonList = [];
+  bool _isLoading = true;
 
   Future<void> getSalons() async {
     final salons = await SalonRepository().getPublishedSalons();
     setState(() {
       salonList = salons;
+      _isLoading = false;
     });
   }
 
@@ -53,67 +55,81 @@ class _DiscoveryViewState extends State<DiscoveryView> {
         width: double.infinity,
         height: double.infinity,
         color: const Color(0xFFFFD9ED),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 56.0),
-                Container(
-                  height: 128.0,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.all(8),
-                    itemCount: salonList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return DiscoveryCard(
-                        urlLogo: salonList[index].logoUrl,
-                        onTap: () => handleDiscoveryTap(salonList[index]),
-                      );
-                    },
+        child: _isLoading
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text(
+                    'Loading Salons',
+                    style: TextStyle(color: Colors.black54),
                   ),
-                ),
-                const SizedBox(height: 28.0),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(25.0),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFBADD1),
-                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  ),
+                ],
+              )
+            : SafeArea(
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const Text(
-                        "Top Rated Salon",
-                        style: TextStyle(
-                          color: Color(0xFFC93480),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 21.0,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GridView.count(
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        crossAxisCount: 2,
-                        children: List.generate(
-                          salonList.length,
-                          (index) {
-                            return TopCard(
+                      const SizedBox(height: 56.0),
+                      Container(
+                        height: 128.0,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.all(8),
+                          itemCount: salonList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return DiscoveryCard(
                               urlLogo: salonList[index].logoUrl,
-                              onTap: () => handleRatedTap(salonList[index]),
+                              onTap: () => handleDiscoveryTap(salonList[index]),
                             );
                           },
+                        ),
+                      ),
+                      const SizedBox(height: 28.0),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(25.0),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFFBADD1),
+                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                        ),
+                        child: Column(
+                          children: [
+                            const Text(
+                              "Top Rated Salon",
+                              style: TextStyle(
+                                color: Color(0xFFC93480),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 21.0,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GridView.count(
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              shrinkWrap: true,
+                              physics: const ScrollPhysics(),
+                              crossAxisCount: 2,
+                              children: List.generate(
+                                salonList.length,
+                                (index) {
+                                  return TopCard(
+                                    urlLogo: salonList[index].logoUrl,
+                                    onTap: () =>
+                                        handleRatedTap(salonList[index]),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: navigationItemsIndexed['discovery'] as int,

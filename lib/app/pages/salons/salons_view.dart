@@ -14,11 +14,13 @@ class SalonsView extends StatefulWidget {
 
 class _SalonsViewState extends State<SalonsView> {
   List salonList = [];
+  bool _isLoading = true;
 
   Future<void> getSalons() async {
     final salons = await SalonRepository().getPublishedSalons();
     setState(() {
       salonList = salons;
+      _isLoading = false;
     });
   }
 
@@ -43,47 +45,60 @@ class _SalonsViewState extends State<SalonsView> {
         width: double.infinity,
         height: double.infinity,
         color: const Color(0xFFFFD9ED),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(25.0),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFC93480),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25.0),
-                    bottomRight: Radius.circular(25.0),
+        child: _isLoading
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text(
+                    'Loading Salons',
+                    style: TextStyle(color: Colors.black54),
                   ),
-                ),
-                child: const SafeArea(
-                  child: Text(
-                    'All Salons',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+                ],
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(25.0),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFC93480),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25.0),
+                          bottomRight: Radius.circular(25.0),
+                        ),
+                      ),
+                      child: const SafeArea(
+                        child: Text(
+                          'All Salons',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 25.0),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ScrollPhysics(),
+                        padding: const EdgeInsets.all(8),
+                        itemCount: salonList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return SalonCard(
+                            title: salonList[index].salonName,
+                            urlLogo: salonList[index].logoUrl,
+                            onTap: () => handleTap(salonList[index]),
+                          );
+                        }),
+                  ],
                 ),
               ),
-              const SizedBox(height: 25.0),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  padding: const EdgeInsets.all(8),
-                  itemCount: salonList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SalonCard(
-                      title: salonList[index].salonName,
-                      urlLogo: salonList[index].logoUrl,
-                      onTap: () => handleTap(salonList[index]),
-                    );
-                  }),
-            ],
-          ),
-        ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: navigationItemsIndexed['salons'] as int,

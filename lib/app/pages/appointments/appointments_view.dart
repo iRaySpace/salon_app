@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_app/app/pages/appointments/appointments_successfully_sent_view.dart';
 import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
@@ -38,8 +39,39 @@ class _AppointmentsViewState extends State<AppointmentsView> {
       context: context,
       titleText: 'Confirm Accept',
       contentText: 'Are you sure you want to accept',
-      onContinue: () {
+      onContinue: () async {
         Navigator.of(context).pop();
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 15.0),
+                    Text('Sending an acceptance email'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+        try {
+          await AppointmentRepository()
+              .sendEmailAccept(appointment, SalonRepository.salon!.salonName);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AppointmentsSuccessfulSentView(),
+            ),
+          );
+        } catch (err) {
+          Navigator.of(context).pop();
+        }
       },
     );
   }
@@ -49,8 +81,39 @@ class _AppointmentsViewState extends State<AppointmentsView> {
       context: context,
       titleText: 'Confirm Reject',
       contentText: 'Are you sure you want to reject?',
-      onContinue: () {
+      onContinue: () async {
         Navigator.of(context).pop();
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 15.0),
+                    Text('Sending a rejected email'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+        try {
+          await AppointmentRepository()
+              .sendEmailReject(appointment, SalonRepository.salon!.salonName);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AppointmentsSuccessfulSentView(),
+            ),
+          );
+        } catch (err) {
+          Navigator.of(context).pop();
+        }
       },
     );
   }

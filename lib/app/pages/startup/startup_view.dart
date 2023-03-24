@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:salon_app/app/pages/discovery/discovery_view.dart';
 import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/env.dart';
 
 class StartupView extends StatefulWidget {
   const StartupView({super.key});
