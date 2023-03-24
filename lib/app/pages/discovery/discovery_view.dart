@@ -97,13 +97,15 @@ class _DiscoveryViewState extends State<DiscoveryView> {
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
                         crossAxisCount: 2,
-                        children: List.generate(salonList.length, (index) {
-                          return TopCard(
+                        children: List.generate(
+                          salonList.length,
+                          (index) {
+                            return TopCard(
                               urlLogo: salonList[index].logoUrl,
-                              onTap: () => handleRatedTap(
-                                    salonList[index],
-                                  ));
-                        }),
+                              onTap: () => handleRatedTap(salonList[index]),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
