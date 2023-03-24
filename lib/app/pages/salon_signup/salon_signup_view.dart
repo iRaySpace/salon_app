@@ -46,6 +46,15 @@ class _SalonSignupViewState extends State<SalonSignupView> {
       return;
     }
 
+    if (_image == null) {
+      showOkDialog(
+        context: context,
+        titleText: 'Unable to Signup',
+        contentText: 'Please upload a logo to proceed',
+      );
+      return;
+    }
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       showDialog(
@@ -69,12 +78,13 @@ class _SalonSignupViewState extends State<SalonSignupView> {
       );
 
       try {
-        final firebase_storage.Reference ref =
-            firebase_storage.FirebaseStorage.instance.ref().child("images/$_fileName");
+        final firebase_storage.Reference ref = firebase_storage
+            .FirebaseStorage.instance
+            .ref()
+            .child("images/$_fileName");
         final firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
         final snapshot = await uploadTask.whenComplete(() {});
         final String url = await snapshot.ref.getDownloadURL();
-        print('File uploaded to $url');
         final contactNumber = int.parse(_data['contactNumber']);
         await SalonRepository().addSalon(
           Salon(
