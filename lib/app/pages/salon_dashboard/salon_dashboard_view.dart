@@ -117,9 +117,11 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
     try {
       final salonId = SalonRepository.salon!.id;
       final salonReady = await isSalonReady(salonId);
-      Navigator.of(context).pop();
       if (salonReady) {
+        await SalonRepository().setSalonPublish(SalonRepository.salon!);
+        Navigator.of(context).pop();
       } else {
+        Navigator.of(context).pop();
         showOkDialog(
           context: context,
           titleText: 'Unable to publish',
