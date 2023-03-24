@@ -120,10 +120,10 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
         date: _data['date'],
         time: _data['time'],
         name: _data['name'],
-        email: 'test@test.com',
+        email: _data['email'],
         service: _data['service'],
         stylist: _data['stylist'],
-        salonId: 'YS6Nd8hZtB5QlPWtHE0D',
+        salonId: widget.salon.id!,
         progress: '',
       );
 
