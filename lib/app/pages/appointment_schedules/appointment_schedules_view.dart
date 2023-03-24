@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_app/app/pages/appointment_schedules/review_add_view.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/domain/entities/appointment.dart';
@@ -8,7 +9,8 @@ class AppointmentSchedulesView extends StatefulWidget {
   const AppointmentSchedulesView({super.key});
 
   @override
-  State<AppointmentSchedulesView> createState() => _AppointmentSchedulesViewState();
+  State<AppointmentSchedulesView> createState() =>
+      _AppointmentSchedulesViewState();
 }
 
 class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
@@ -16,8 +18,8 @@ class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
 
   void loadAppointments() async {
     final customer = AuthRepository.customer!;
-    final appointments = await AppointmentRepository()
-        .getAppointmentsByEmail(customer.email);
+    final appointments =
+        await AppointmentRepository().getAppointmentsByEmail(customer.email);
     setState(() {
       _appointments = appointments;
     });
@@ -31,6 +33,15 @@ class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
 
   void handleBack() {
     Navigator.of(context).pop();
+  }
+
+  void handleRate(Appointment appointment) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReviewAddView(appointment: appointment),
+      ),
+    );
   }
 
   @override
@@ -76,8 +87,12 @@ class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
                     ],
                   ),
                   const SizedBox(height: 15.0),
-                  ..._appointments
-                      .map((appointment) => AppointmentCard(data: appointment)),
+                  ..._appointments.map(
+                    (appointment) => AppointmentCard(
+                      data: appointment,
+                      onRate: () => handleRate(appointment),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -92,9 +107,11 @@ class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     super.key,
     required this.data,
+    this.onRate,
   });
 
   final Appointment data;
+  final Function()? onRate;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +189,15 @@ class AppointmentCard extends StatelessWidget {
                 Text(
                   data.time,
                   style: const TextStyle(color: Colors.black54),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: onRate,
+                  child: const Text('Rate Appointment'),
                 ),
               ],
             ),

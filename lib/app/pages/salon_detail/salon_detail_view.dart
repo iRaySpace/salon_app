@@ -130,30 +130,6 @@ class _SalonDetailViewState extends State<SalonDetailView> {
                   ),
                 ),
                 const SizedBox(height: 25.0),
-                const Text(
-                  'Add Ratings and Feedbacks',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 14.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Feedback',
-                  ),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xFFC93480),
-                    labelText: 'Feedback',
-                  ),
-                ),
-                const SizedBox(height: 14.0),
-                AppElevatedButton(
-                  onPressed: () {},
-                  child: Text('Submit'),
-                ),
               ],
             ),
           ),

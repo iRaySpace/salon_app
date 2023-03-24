@@ -21,4 +21,23 @@ class RatingsRepository {
     }
     return feedbacks;
   }
+
+  Future<Rating> addRating(Rating rating, String appointmentId) async {
+    final feedback =
+        await FirebaseFirestore.instance.collection("feedback").add({
+      'createdAt': Timestamp.now(),
+      ...rating.toJSON(),
+    });
+    await FirebaseFirestore.instance
+        .collection("salon")
+        .doc(rating.salonId)
+        .set({
+      "ratings": FieldValue.arrayUnion([rating.star])
+    }, SetOptions(merge: true));
+    await FirebaseFirestore.instance
+        .collection("Appointment")
+        .doc(appointmentId)
+        .set({"feedbackId": feedback.id}, SetOptions(merge: true));
+    return rating;
+  }
 }
