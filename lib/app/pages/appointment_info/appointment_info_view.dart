@@ -126,6 +126,10 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
     }
   }
 
+  void handleBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,14 +151,26 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                     bottomRight: Radius.circular(25.0),
                   ),
                 ),
-                child: const SafeArea(
-                  child: Text(
-                    'Appointment Info',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: SafeArea(
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: handleBack,
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 28.0,
+                        ),
+                      ),
+                      const Text(
+                        'Appointment Info',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
