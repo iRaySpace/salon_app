@@ -41,13 +41,14 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void handleLogout() async {
-    await AuthRepository().logout();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LogoutView(),
-      ),
-    );
+    showLogoutDialog(context, () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LogoutView(),
+        ),
+      );
+    });
   }
 
   void handleSalon() {
