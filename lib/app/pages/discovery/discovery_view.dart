@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salon_app/app/pages/discovery/widgets/discovery_card.dart';
+import 'package:salon_app/app/widgets/discovery_card.dart';
 import 'package:salon_app/app/pages/discovery/widgets/top_card.dart';
 import 'package:salon_app/app/pages/salon_detail/salon_detail_view.dart';
 import 'package:salon_app/app/widgets/app_bottom_navigation_bar.dart';
