@@ -5,15 +5,20 @@ import 'package:salon_app/domain/entities/salon.dart';
 class SalonRepository {
   static Salon? salon; // for auth purposes
 
-  Future<List<dynamic>> getSalons() async {
+  Future<List<Salon>> getSalons() async {
     final salons = await FirebaseFirestore.instance.collection("salon").get();
-    final data = [];
+    final List<Salon> data = [];
     for (final salon in salons.docs) {
       final salonData = salon.data();
       final laaganTrainee = Salon.fromJson({...salonData, 'id': salon.id});
       data.add(laaganTrainee);
     }
     return data;
+  }
+
+  Future<List<Salon>> getPublishedSalons() async {
+    final List<Salon> salons = await getSalons();
+    return salons.where((salon) => salon.published).toList();
   }
 
   Future<Salon> getSalonByUid(uid) async {
@@ -41,6 +46,14 @@ class SalonRepository {
         .first;
     await customerSnapshot.reference.set(
       {'type': Customer.salonType},
+      SetOptions(merge: true),
+    );
+    return salon;
+  }
+
+  Future<Salon> setSalonPublish(Salon salon) async {
+    await FirebaseFirestore.instance.collection("salon").doc(salon.id).set(
+      {'published': true},
       SetOptions(merge: true),
     );
     return salon;

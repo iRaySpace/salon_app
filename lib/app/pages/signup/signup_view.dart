@@ -15,7 +15,7 @@ class SignupView extends StatefulWidget {
 
 class _SignupViewState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
-  final _genderItems = ['Male', 'Female'];
+  final _genderItems = ['Male', 'Female', 'Prefer not to say'];
 
   // for validation purposes only
   final TextEditingController _passwordController = TextEditingController();

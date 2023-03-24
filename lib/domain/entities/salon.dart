@@ -6,6 +6,7 @@ class Salon {
     required this.contactNumber,
     required this.businessRegistration,
     required this.logoUrl,
+    this.published = false,
     this.uid,
     this.id,
   });
@@ -16,6 +17,7 @@ class Salon {
   final int contactNumber;
   final String businessRegistration;
   final String logoUrl;
+  final bool published;
 
   final String? uid;
   final String? id;
@@ -28,6 +30,7 @@ class Salon {
       contactNumber: data['contactNumber'],
       businessRegistration: data['businessRegistration'],
       logoUrl: data['logoUrl'],
+      published: data['published'] ?? false,
       uid: data['uid'],
       id: data['id'],
     );
@@ -41,6 +44,7 @@ class Salon {
       'logoUrl': logoUrl,
       'salonLocation': salonLocation,
       'salonName': salonName,
+      'uid': uid,
     };
   }
 }

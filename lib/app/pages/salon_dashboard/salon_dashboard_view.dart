@@ -11,6 +11,7 @@ import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/auth_repository.dart';
 import 'package:salon_app/data/customer_repository.dart';
 import 'package:salon_app/data/salon_repository.dart';
+import 'package:salon_app/data/utils.dart';
 
 class SalonDashboardView extends StatefulWidget {
   const SalonDashboardView({super.key});
@@ -20,9 +21,14 @@ class SalonDashboardView extends StatefulWidget {
 }
 
 class _SalonDashboardViewState extends State<SalonDashboardView> {
+  bool _isLoading = true;
+
   void loadSalon() async {
     final customer = AuthRepository.customer;
-    await SalonRepository().getSalonByUid(customer!.uid);
+    final salon = await SalonRepository().getSalonByUid(customer!.uid);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -87,6 +93,45 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
     });
   }
 
+  void handlePublish() async {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 15.0),
+                Text('Publishing Salon...'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    try {
+      final salonId = SalonRepository.salon!.id;
+      final salonReady = await isSalonReady(salonId);
+      Navigator.of(context).pop();
+      if (salonReady) {
+      } else {
+        showOkDialog(
+          context: context,
+          titleText: 'Unable to publish',
+          contentText:
+              'Please setup your services, stylist, and schedules first!',
+        );
+      }
+    } on Exception catch (e, s) {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,44 +151,60 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                     color: Color(0xFFFBADD1),
                     borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   ),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Salon Dashboard",
-                        style: TextStyle(
-                          color: Color(0xFFC93480),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 21.0,
+                  child: _isLoading
+                      ? Column(
+                          children: const [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 10.0),
+                            Text(
+                              'Loading',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            const Text(
+                              "Salon Dashboard",
+                              style: TextStyle(
+                                color: Color(0xFFC93480),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 21.0,
+                              ),
+                            ),
+                            const SizedBox(height: 25.0),
+                            DashboardCard(
+                              title: 'View Appointments',
+                              onTap: handleAppointments,
+                            ),
+                            DashboardCard(
+                              title: 'Manage Services',
+                              onTap: handleServices,
+                            ),
+                            DashboardCard(
+                              title: 'Manage Stylist',
+                              onTap: handleStylist,
+                            ),
+                            DashboardCard(
+                              title: 'Ratings and Feedbacks',
+                              onTap: handleRatings,
+                            ),
+                            DashboardCard(
+                              title: 'Manage Schedule',
+                              onTap: handleSchedule,
+                            ),
+                            const SizedBox(height: 25.0),
+                            AppElevatedButton(
+                              onPressed: handlePublish,
+                              child: const Text("Publish"),
+                            ),
+                            const SizedBox(height: 15.0),
+                            AppElevatedButton(
+                              onPressed: handleLogout,
+                              child: const Text('Logout'),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 25.0),
-                      DashboardCard(
-                        title: 'View Appointments',
-                        onTap: handleAppointments,
-                      ),
-                      DashboardCard(
-                        title: 'Manage Services',
-                        onTap: handleServices,
-                      ),
-                      DashboardCard(
-                        title: 'Manage Stylist',
-                        onTap: handleStylist,
-                      ),
-                      DashboardCard(
-                        title: 'Ratings and Feedbacks',
-                        onTap: handleRatings,
-                      ),
-                      DashboardCard(
-                        title: 'Manage Schedule',
-                        onTap: handleSchedule,
-                      ),
-                      const SizedBox(height: 25.0),
-                      AppElevatedButton(
-                        onPressed: handleLogout,
-                        child: const Text('Logout'),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),

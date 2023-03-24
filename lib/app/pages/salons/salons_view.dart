@@ -16,7 +16,7 @@ class _SalonsViewState extends State<SalonsView> {
   List salonList = [];
 
   Future<void> getSalons() async {
-    final salons = await SalonRepository().getSalons();
+    final salons = await SalonRepository().getPublishedSalons();
     setState(() {
       salonList = salons;
     });

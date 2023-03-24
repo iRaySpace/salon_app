@@ -8,14 +8,20 @@ class ScheduleRepository {
         .collection("SalonCalendar")
         .doc(uid)
         .get();
-    final calendarData = calendarSnapshot.data()!;
-    final dailySchedule = calendarData['dailySchedule'];
+    final calendarData = calendarSnapshot.data();
+    Map<String, dynamic> dailySchedule = {};
+    if (calendarData != null) {
+      dailySchedule = calendarData['dailySchedule'];
+    }
     final schedule = Schedule(dailySchedule: dailySchedule);
     return schedule;
   }
 
   Future<void> saveSchedule(uid, Schedule schedule) async {
     final calendar = {"dailySchedule": schedule.asMap()};
-    await FirebaseFirestore.instance.collection("SalonCalendar").doc(uid).set(calendar);
+    await FirebaseFirestore.instance
+        .collection("SalonCalendar")
+        .doc(uid)
+        .set(calendar);
   }
 }
