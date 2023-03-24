@@ -70,4 +70,8 @@ class AuthRepository {
     await FirebaseAuth.instance.signOut();
     AuthRepository.customer = null;
   }
+
+  Future<void> sendPasswordReset(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 }

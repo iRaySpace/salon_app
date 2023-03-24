@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/discovery/discovery_view.dart';
+import 'package:salon_app/app/pages/forgot_password/forgot_password_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_dashboard/salon_dashboard_view.dart';
 import 'package:salon_app/app/pages/signup/signup_view.dart';
@@ -105,6 +106,15 @@ class _SigninViewState extends State<SigninView> {
     );
   }
 
+  void handleForgot() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ForgotPasswordView(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +189,7 @@ class _SigninViewState extends State<SigninView> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: handleForgot,
                     child: const Text('Forgot Password?'),
                   ),
                   const SizedBox(height: 25.0),
