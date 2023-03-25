@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
+import 'package:salon_app/data/auth_repository.dart';
 // import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/schedule_repository.dart';
 import 'package:salon_app/domain/entities/salon.dart';
@@ -36,6 +38,15 @@ class _SalonDetailViewState extends State<SalonDetailView> {
   }
 
   void handleMake() {
+    final customerId = AuthRepository.customer!.uid;
+    if (customerId == widget.salon.uid) {
+      showOkDialog(
+        context: context,
+        titleText: 'Unable to make appointment',
+        contentText: 'Salon is restricted to make appointment from their branch',
+      );
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
