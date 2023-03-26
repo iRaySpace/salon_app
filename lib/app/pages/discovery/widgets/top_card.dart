@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 class TopCard extends StatelessWidget {
   const TopCard({
     super.key,
+    required this.salonName,
     this.urlLogo,
     this.onTap,
   });
+  final String salonName;
   final String? urlLogo;
   final Function()? onTap;
   @override
@@ -21,11 +23,27 @@ class TopCard extends StatelessWidget {
         child: Container(
           width: 156.0,
           height: 128.0,
+          padding: const EdgeInsets.only(top: 15.0),
           decoration: const BoxDecoration(
             color: Color(0xFFC93480),
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
           ),
-          child: Image.network(urlLogo!),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20), // Image border
+                child: SizedBox.fromSize(
+                  size: const Size.fromRadius(64.0), // Image radius
+                  child: Image.network(urlLogo!, fit: BoxFit.cover),
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Text(
+                salonName,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );

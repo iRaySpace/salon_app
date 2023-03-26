@@ -116,6 +116,7 @@ class _DiscoveryViewState extends State<DiscoveryView> {
                                 salonList.length,
                                 (index) {
                                   return TopCard(
+                                    salonName: salonList[index].salonName,
                                     urlLogo: salonList[index].logoUrl,
                                     onTap: () =>
                                         handleRatedTap(salonList[index]),
