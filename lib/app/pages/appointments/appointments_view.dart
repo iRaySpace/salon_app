@@ -17,10 +17,11 @@ class _AppointmentsViewState extends State<AppointmentsView> {
   List<Appointment> _appointments = [];
 
   void loadAppointments() async {
-    final appointments = await AppointmentRepository()
+    var appointments = await AppointmentRepository()
         .getAppointmentsByUid(SalonRepository.salon!.id);
+    final emptyAppointments = appointments.where((appointment) => appointment.progress.isEmpty).toList();
     setState(() {
-      _appointments = appointments;
+      _appointments = emptyAppointments;
     });
   }
 

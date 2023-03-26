@@ -120,9 +120,9 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
         date: _data['date'],
         time: _data['time'],
         name: _data['name'],
-        email: _data['email'],
         service: _data['service'],
         stylist: _data['stylist'],
+        email: _emailController.text,
         salonId: widget.salon.id!,
         progress: '',
       );
@@ -230,23 +230,6 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                                 decoration: const InputDecoration(
                                   border: UnderlineInputBorder(),
                                   labelText: 'Name',
-                                ),
-                              ),
-                              const SizedBox(height: 5.0),
-                              TextFormField(
-                                enabled: false,
-                                controller: _emailController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please input email';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (newValue) =>
-                                    _data['email'] = newValue!,
-                                decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: 'Email',
                                 ),
                               ),
                               const SizedBox(height: 5.0),

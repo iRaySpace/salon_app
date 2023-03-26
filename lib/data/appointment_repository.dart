@@ -44,14 +44,14 @@ class AppointmentRepository {
     await FirebaseFirestore.instance
         .collection("Appointment")
         .doc(appointment.id)
-        .set({'progress': 'accepted'}, SetOptions(merge: true));
+        .set({'progress': Appointment.acceptedProgress}, SetOptions(merge: true));
   }
 
   Future<void> setAppointmentReject(Appointment appointment) async {
     await FirebaseFirestore.instance
         .collection("Appointment")
         .doc(appointment.id)
-        .set({'progress': 'rejected'}, SetOptions(merge: true));
+        .set({'progress': Appointment.rejectedProgress}, SetOptions(merge: true));
   }
 
   Future<void> sendEmailAccept(Appointment appointment, salonName) async {

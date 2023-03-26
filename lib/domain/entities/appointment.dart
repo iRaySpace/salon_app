@@ -23,6 +23,9 @@ class Appointment {
   final String feedbackId;
   final String? id;
 
+  static const acceptedProgress = 'accepted';
+  static const rejectedProgress = 'rejected';
+
   static fromJson(data) {
     return Appointment(
       salonId: data['salonId'],
