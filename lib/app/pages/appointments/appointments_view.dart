@@ -38,7 +38,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
     showAlertDialog(
       context: context,
       titleText: 'Confirm Accept',
-      contentText: 'Are you sure you want to accept',
+      contentText: 'Are you sure you want to accept?',
       onContinue: () async {
         Navigator.of(context).pop();
         showDialog(
@@ -61,6 +61,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           },
         );
         try {
+          await AppointmentRepository().setAppointmentAccept(appointment);
           await AppointmentRepository()
               .sendEmailAccept(appointment, SalonRepository.salon!.salonName);
           Navigator.pushReplacement(
@@ -103,6 +104,7 @@ class _AppointmentsViewState extends State<AppointmentsView> {
           },
         );
         try {
+          await AppointmentRepository().setAppointmentReject(appointment);
           await AppointmentRepository()
               .sendEmailReject(appointment, SalonRepository.salon!.salonName);
           Navigator.pushReplacement(

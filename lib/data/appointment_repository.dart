@@ -40,13 +40,27 @@ class AppointmentRepository {
     return appointment;
   }
 
+  Future<void> setAppointmentAccept(Appointment appointment) async {
+    await FirebaseFirestore.instance
+        .collection("Appointment")
+        .doc(appointment.id)
+        .set({'progress': 'accepted'}, SetOptions(merge: true));
+  }
+
+  Future<void> setAppointmentReject(Appointment appointment) async {
+    await FirebaseFirestore.instance
+        .collection("Appointment")
+        .doc(appointment.id)
+        .set({'progress': 'rejected'}, SetOptions(merge: true));
+  }
+
   Future<void> sendEmailAccept(Appointment appointment, salonName) async {
     final emailBody = {
       "personalizations": [
         {
           "to": [
             {"email": appointment.email, "name": appointment.name}
-           ],
+          ],
           "dynamic_template_data": {
             "salon": salonName,
             "name": appointment.name,
