@@ -38,6 +38,14 @@ class _AppointmentSchedulesViewState extends State<AppointmentSchedulesView> {
   }
 
   void handleRate(Appointment appointment) async {
+    if (appointment.progress != Appointment.acceptedProgress) {
+      showOkDialog(
+        context: context,
+        titleText: 'Unable to leave a review',
+        contentText: 'Appointment should be accepted before making a review.',
+      );
+      return;
+    }
     if (appointment.feedbackId.isNotEmpty) {
       final feedback = await RatingsRepository().getRatingById(appointment.feedbackId);
       showOkDialog(
@@ -204,8 +212,12 @@ class AppointmentCard extends StatelessWidget {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Text(
+                  'Status: ${data.progress.toUpperCase()}',
+                  style: const TextStyle(color: Colors.black87),
+                ),
                 OutlinedButton(
                   onPressed: onRate,
                   child: const Text('Review'),
