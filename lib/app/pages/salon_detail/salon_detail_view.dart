@@ -43,7 +43,8 @@ class _SalonDetailViewState extends State<SalonDetailView> {
       showOkDialog(
         context: context,
         titleText: 'Unable to make appointment',
-        contentText: 'Salon is restricted to make appointment from their branch',
+        contentText:
+            'Salon is restricted to make appointment from their branch',
       );
       return;
     }
@@ -95,6 +96,18 @@ class _SalonDetailViewState extends State<SalonDetailView> {
                 ),
                 const SizedBox(height: 25.0),
                 Image.network(widget.salon.logoUrl),
+                const SizedBox(height: 25.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.star_outline),
+                    const SizedBox(width: 5.0),
+                    Text(
+                      'Rating: ${widget.salon.getTotalRatings()}',
+                      style: const TextStyle(fontSize: 21.0),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 25.0),
                 AppElevatedButton(
                   onPressed: handleMake,

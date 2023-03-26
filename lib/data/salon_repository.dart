@@ -10,7 +10,7 @@ class SalonRepository {
     final List<Salon> data = [];
     for (final salon in salons.docs) {
       final salonData = salon.data();
-      final laaganTrainee = Salon.fromJson({...salonData, 'id': salon.id});
+      final laaganTrainee = Salon.fromJSON({...salonData, 'id': salon.id});
       data.add(laaganTrainee);
     }
     return data;
@@ -28,7 +28,7 @@ class SalonRepository {
         .get();
     final salonDoc = salonSnapshot.docs.first;
     final salonData = salonDoc.data();
-    final salon = Salon.fromJson({...salonData, 'id': salonDoc.id});
+    final salon = Salon.fromJSON({...salonData, 'id': salonDoc.id});
     SalonRepository.salon = salon;
     return salon;
   }

@@ -6,6 +6,7 @@ class Salon {
     required this.contactNumber,
     required this.businessRegistration,
     required this.logoUrl,
+    this.ratings = const [],
     this.published = false,
     this.uid,
     this.id,
@@ -18,11 +19,20 @@ class Salon {
   final String businessRegistration;
   final String logoUrl;
   final bool published;
+  final List<dynamic> ratings;
 
   final String? uid;
   final String? id;
 
-  static fromJson(data) {
+  double getTotalRatings() {
+    var totalRatings = 0.00;
+    for (final rating in ratings) {
+      totalRatings = totalRatings + double.parse(rating);
+    }
+    return totalRatings / ratings.length;
+  }
+
+  static fromJSON(data) {
     return Salon(
       salonName: data['salonName'],
       salonLocation: data['salonLocation'],
@@ -31,6 +41,7 @@ class Salon {
       businessRegistration: data['businessRegistration'],
       logoUrl: data['logoUrl'],
       published: data['published'] ?? false,
+      ratings: data['ratings'] ?? [],
       uid: data['uid'],
       id: data['id'],
     );
