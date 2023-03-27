@@ -134,6 +134,10 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
     }
   }
 
+  void handleBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,9 +149,35 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25.0,
+                    horizontal: 15.0,
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: handleBack,
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Color(0xFFC93480),
+                          size: 28.0,
+                        ),
+                      ),
+                      const Text(
+                        'Salon Dashboard',
+                        style: TextStyle(
+                          color: Color(0xFFC93480),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.all(25.0),
+                  margin: const EdgeInsets.only(left: 25.0, right: 25.0),
                   padding: const EdgeInsets.all(25.0),
                   decoration: const BoxDecoration(
                     color: Color(0xFFFBADD1),
@@ -166,15 +196,6 @@ class _SalonDashboardViewState extends State<SalonDashboardView> {
                         )
                       : Column(
                           children: [
-                            const Text(
-                              "Salon Dashboard",
-                              style: TextStyle(
-                                color: Color(0xFFC93480),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 21.0,
-                              ),
-                            ),
-                            const SizedBox(height: 25.0),
                             DashboardCard(
                               title: 'View Appointments',
                               onTap: handleAppointments,
