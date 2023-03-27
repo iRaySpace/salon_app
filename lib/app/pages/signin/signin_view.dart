@@ -115,6 +115,10 @@ class _SigninViewState extends State<SigninView> {
     );
   }
 
+  void handleBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +133,27 @@ class _SigninViewState extends State<SigninView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 56.0),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: handleBack,
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Color(0xFFC93480),
+                          size: 28.0,
+                        ),
+                      ),
+                      const Text(
+                        'Log In',
+                        style: TextStyle(
+                          color: Color(0xFFC93480),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
                   Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
