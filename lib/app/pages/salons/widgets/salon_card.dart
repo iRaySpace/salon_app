@@ -5,10 +5,12 @@ class SalonCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.urlLogo,
+    required this.totalRatings,
     this.onTap,
   });
 
   final String title, urlLogo;
+  final double totalRatings;
   final Function()? onTap;
 
   @override
@@ -46,14 +48,28 @@ class SalonCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 15.0),
                     Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: Colors.white),
+                              Text(
+                                'Rating: $totalRatings',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],

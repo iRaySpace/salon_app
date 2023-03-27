@@ -93,6 +93,7 @@ class _SalonsViewState extends State<SalonsView> {
                           return SalonCard(
                             title: salonList[index].salonName,
                             urlLogo: salonList[index].logoUrl,
+                            totalRatings: salonList[index].getTotalRatings(),
                             onTap: () => handleTap(salonList[index]),
                           );
                         }),
