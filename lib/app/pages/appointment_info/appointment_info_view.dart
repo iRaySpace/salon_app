@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:salon_app/app/pages/appointment_info/appointment_info_successful_view.dart';
 import 'package:salon_app/app/pages/profile/widgets/app_elevated_button.dart';
 import 'package:salon_app/app/pages/salon_detail/salon_detail_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/app/widgets/discovery_card.dart';
 import 'package:salon_app/data/appointment_repository.dart';
 import 'package:salon_app/data/auth_repository.dart';
@@ -74,6 +75,14 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
       lastDate: DateTime(2099),
     );
     if (selectedDate != null) {
+      if (selectedDate.compareTo(DateTime.now()) < 0) {
+        showOkDialog(
+          context: context,
+          titleText: 'Unable to select date',
+          contentText: 'Should select a later date',
+        );
+        return;
+      }
       setState(() {
         isPickedDate = true;
         _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
