@@ -206,14 +206,15 @@ class SalonProfileColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final name = '${AuthRepository.customer?.firstName ?? ''} ${AuthRepository.customer?.lastName ?? ''}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 56.0),
-        const Text(
-          'Welcome, ka-SalonBeau!',
+        Text(
+          'Welcome, ka-SalonBeau, $name',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 28.0,
             color: Color(0xFFC93480),
             fontWeight: FontWeight.bold,
@@ -269,14 +270,15 @@ class CustomerProfileColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final name = '${AuthRepository.customer?.firstName ?? ''} ${AuthRepository.customer?.lastName ?? ''}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 56.0),
-        const Text(
-          "Welcome to SalonBeau!",
+        Text(
+          "Welcome to SalonBeau, $name!",
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 28.0,
             color: Color(0xFFC93480),
             fontWeight: FontWeight.bold,
