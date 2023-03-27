@@ -22,6 +22,14 @@ class Schedule {
     _blocks = blocks;
   }
 
+  void addBlock(ScheduleBlock block) {
+    _blocks.add(block);
+  }
+
+  void removeBlock(ScheduleBlock block) {
+    _blocks = _blocks.where((x) => x.day != block.day).toList();
+  }
+
   Map<String, dynamic> asMap() {
     final Map<String, dynamic> data = {};
     for (final block in _blocks) {

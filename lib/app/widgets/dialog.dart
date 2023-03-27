@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/data/auth_repository.dart';
+import 'package:salon_app/domain/entities/schedule.dart';
 
 showAlertDialog({
   required BuildContext context,
@@ -73,6 +74,110 @@ showOkDialog({
     context: context,
     builder: (BuildContext context) {
       return alert;
+    },
+  );
+}
+
+Future<ScheduleBlock?> showScheduleDialog(BuildContext context) async {
+  return showDialog<ScheduleBlock>(
+    context: context,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: const Text('Select day'),
+        children: <Widget>[
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'monday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Monday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'tuesday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Tuesday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'wednesday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Wednesday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'thursday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Thursday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'friday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Friday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'saturday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Saturday'),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(
+                context,
+                ScheduleBlock(
+                  day: 'sunday',
+                  startTime: DateTime.now(),
+                  endTime: DateTime.now(),
+                ),
+              );
+            },
+            child: const Text('Sunday'),
+          ),
+        ],
+      );
     },
   );
 }
