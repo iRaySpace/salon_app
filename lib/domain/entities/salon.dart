@@ -25,6 +25,9 @@ class Salon {
   final String? id;
 
   double getTotalRatings() {
+    if (ratings.isEmpty) {
+      return 0.00;
+    }
     var totalRatings = 0.00;
     for (final rating in ratings) {
       totalRatings = totalRatings + double.parse(rating);
