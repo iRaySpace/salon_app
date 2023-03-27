@@ -25,6 +25,10 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
   List<Service> _services = [];
   List<Stylist> _stylists = [];
   List<Salon> _salons = [];
+  bool isPickedDate = false;
+  bool isPickedStylist = false;
+  bool isPickedService = false;
+  bool isPickedTime = false;
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -70,7 +74,10 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
       lastDate: DateTime(2099),
     );
     if (selectedDate != null) {
-      _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+      setState(() {
+        isPickedDate = true;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
     }
   }
 
@@ -88,7 +95,10 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
         selectedTime.hour,
         selectedTime.minute,
       );
-      _timeController.text = DateFormat.Hm().format(date);
+      setState(() {
+        isPickedTime = true;
+        _timeController.text = DateFormat.Hm().format(date);
+      });
     }
   }
 
@@ -246,7 +256,11 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                                 decoration: const InputDecoration(
                                   labelText: 'Services',
                                 ),
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPickedService = true;
+                                  });
+                                },
                                 items: _services
                                     .map((service) => service.category)
                                     .map((service) {
@@ -273,7 +287,11 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                                 decoration: const InputDecoration(
                                   labelText: 'Stylist',
                                 ),
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPickedStylist = true;
+                                  });
+                                },
                                 items: _stylists
                                     .map((stylist) => stylist.stylist)
                                     .map((stylist) {
@@ -327,8 +345,13 @@ class _AppointmentInfoViewState extends State<AppointmentInfoView> {
                       ),
                       const SizedBox(height: 25.0),
                       AppElevatedButton(
-                        onPressed: handleAdd,
-                        child: const Text('Add Appointment'),
+                        onPressed: !isPickedStylist ||
+                                !isPickedService ||
+                                !isPickedDate ||
+                                !isPickedTime
+                            ? null
+                            : handleAdd,
+                        child: Text('Add Appointment'),
                       ),
                       const SizedBox(height: 35.0),
                       const Text(
