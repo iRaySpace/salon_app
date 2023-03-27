@@ -11,6 +11,9 @@ class AuthRepository {
       email: customer.email,
       password: password,
     );
+    if (credential.user != null) {
+      await credential.user!.sendEmailVerification();
+    }
     await FirebaseFirestore.instance.collection("customer").add({
       'createdAt': Timestamp.now(),
       'uid': credential.user!.uid,
