@@ -9,6 +9,7 @@ class StylistRepository {
     });
     return stylist;
   }
+
   Future<List<Stylist>> getStylists() async {
     final snapshot =
         await FirebaseFirestore.instance.collection("stylist").get();
@@ -38,5 +39,13 @@ class StylistRepository {
         .collection("stylist")
         .doc(stylist.id)
         .delete();
+  }
+
+  Future<Stylist> editStylist(Stylist stylist) async {
+    await FirebaseFirestore.instance.collection("stylist").doc(stylist.id).set({
+      'modifiedAt': Timestamp.now(),
+      ...stylist.toJson(),
+    });
+    return stylist;
   }
 }

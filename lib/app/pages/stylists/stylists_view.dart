@@ -86,6 +86,15 @@ class _StylistsViewState extends State<StylistsView> {
     );
   }
 
+void handleEdit(Stylist stylist) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StylistsAddView(data: stylist),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +149,10 @@ class _StylistsViewState extends State<StylistsView> {
                   ..._stylists
                       .map(
                         (stylist) => StylistColumn(
-                            data: stylist, onDelete: handleDelete),
+                          data: stylist,
+                          onDelete: handleDelete,
+                          onEdit: handleEdit,
+                        ),
                       )
                       .toList(),
                 ],
@@ -158,9 +170,11 @@ class StylistColumn extends StatelessWidget {
     super.key,
     required this.data,
     this.onDelete,
+    this.onEdit,
   });
   final Stylist data;
   final Function(Stylist)? onDelete;
+  final Function(Stylist)? onEdit;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -171,9 +185,17 @@ class StylistColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(data.stylist, textAlign: TextAlign.left),
-            IconButton(
-              onPressed: () => onDelete?.call(data),
-              icon: const Icon(Icons.delete, color: Colors.red),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () => onDelete?.call(data),
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                ),
+                IconButton(
+                  onPressed: () => onEdit?.call(data),
+                  icon: const Icon(Icons.edit, color: Colors.black54),
+                ),
+              ],
             ),
           ],
         ),

@@ -6,8 +6,8 @@ import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
 
 class StylistsAddView extends StatefulWidget {
-  const StylistsAddView({super.key});
-
+  const StylistsAddView({super.key, this.data});
+  final Stylist? data;
   @override
   State<StylistsAddView> createState() => _StylistsAddViewState();
 }
@@ -61,6 +61,52 @@ class _StylistsAddViewState extends State<StylistsAddView> {
     }
   }
 
+  void handleEdit() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      final salon = SalonRepository.salon!;
+
+      final stylist = Stylist(
+        id: widget.data!.id,
+        salonId: salon.id!,
+        stylist: data['stylist'],
+      );
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text('Editing a stylist'),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      try {
+        await StylistRepository().editStylist(stylist);
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const StylistsView(),
+          ),
+        );
+      } catch (e) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +135,7 @@ class _StylistsAddViewState extends State<StylistsAddView> {
                         ),
                       ),
                       const Text(
-                        'Add Stylist',
+                        'Stylist',
                         style: TextStyle(
                           color: Color(0xFFC93480),
                           fontWeight: FontWeight.bold,
@@ -104,6 +150,7 @@ class _StylistsAddViewState extends State<StylistsAddView> {
                     child: Column(
                       children: [
                         TextFormField(
+                          initialValue: widget.data?.stylist,
                           decoration:
                               const InputDecoration(labelText: 'Stylist'),
                           validator: (value) {
@@ -116,8 +163,8 @@ class _StylistsAddViewState extends State<StylistsAddView> {
                         ),
                         const SizedBox(height: 15.0),
                         AppElevatedButton(
-                          onPressed: handleAdd,
-                          child: const Text('Add Stylist'),
+                          onPressed: widget.data == null ? handleAdd : handleEdit,
+                          child: const Text('Submit'),
                         ),
                       ],
                     ),

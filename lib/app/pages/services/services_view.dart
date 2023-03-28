@@ -89,6 +89,15 @@ class _StylistsViewState extends State<ServicesView> {
     );
   }
 
+  void handleEdit(Service service) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ServicesAddView(data: service),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +154,7 @@ class _StylistsViewState extends State<ServicesView> {
                         (service) => ServiceColumn(
                           data: service,
                           onDelete: handleDelete,
+                          onEdit: handleEdit,
                         ),
                       )
                       .toList(),
@@ -164,23 +174,33 @@ class ServiceColumn extends StatelessWidget {
     // required this.service,
     required this.data,
     this.onDelete,
+    this.onEdit,
   });
   // final String service;
   final Service data;
   final Function(Service)? onDelete;
+  final Function(Service)? onEdit;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 15.0),
-         Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(data.category, textAlign: TextAlign.left),
-            IconButton(
-              onPressed: () => onDelete?.call(data),
-              icon: const Icon(Icons.delete, color: Colors.red),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () => onDelete?.call(data),
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                ),
+                IconButton(
+                  onPressed: () => onEdit?.call(data),
+                  icon: const Icon(Icons.edit, color: Colors.black54),
+                ),
+              ],
             ),
           ],
         ),

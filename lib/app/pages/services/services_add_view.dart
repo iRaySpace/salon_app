@@ -9,8 +9,8 @@ import 'package:salon_app/domain/entities/service.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
 
 class ServicesAddView extends StatefulWidget {
-  const ServicesAddView({super.key});
-
+  const ServicesAddView({super.key, this.data});
+  final Service? data;
   @override
   State<ServicesAddView> createState() => _ServicesAddViewState();
 }
@@ -71,6 +71,54 @@ class _ServicesAddViewState extends State<ServicesAddView> {
     }
   }
 
+  void handleEdit() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      final salon = SalonRepository.salon!;
+
+      final cost = double.parse(data['cost']);
+      final service = Service(
+        id: widget.data!.id,
+        salonId: salon.id!,
+        category: data['category'],
+        subCategory: data['subCategory'] ?? '',
+        cost: cost,
+      );
+
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.0),
+                  Text('Editing a service'),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      try {
+        await ServiceRepository().editService(service);
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ServicesView(),
+          ),
+        );
+      } catch (e) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +147,7 @@ class _ServicesAddViewState extends State<ServicesAddView> {
                         ),
                       ),
                       const Text(
-                        'Add Service',
+                        'Service',
                         style: TextStyle(
                           color: Color(0xFFC93480),
                           fontWeight: FontWeight.bold,
@@ -114,6 +162,7 @@ class _ServicesAddViewState extends State<ServicesAddView> {
                     child: Column(
                       children: [
                         TextFormField(
+                          initialValue: widget.data?.category,
                           decoration:
                               const InputDecoration(labelText: 'Category'),
                           validator: (value) {
@@ -125,6 +174,7 @@ class _ServicesAddViewState extends State<ServicesAddView> {
                           onSaved: (value) => data['category'] = value,
                         ),
                         TextFormField(
+                          initialValue: widget.data?.cost.toString(),
                           decoration: const InputDecoration(labelText: 'Cost'),
                           validator: (value) {
                             if (value == null) {
@@ -136,14 +186,15 @@ class _ServicesAddViewState extends State<ServicesAddView> {
                           keyboardType: TextInputType.number,
                         ),
                         TextFormField(
+                          initialValue: widget.data?.subCategory,
                           decoration:
                               const InputDecoration(labelText: 'Sub Category'),
                           onSaved: (value) => data['subCategory'] = value,
                         ),
                         const SizedBox(height: 15.0),
                         AppElevatedButton(
-                          onPressed: handleAdd,
-                          child: const Text('Add Service'),
+                          onPressed: widget.data != null ? handleEdit : handleAdd,
+                          child: const Text('Submit'),
                         ),
                       ],
                     ),

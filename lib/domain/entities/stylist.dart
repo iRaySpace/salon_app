@@ -4,9 +4,11 @@ class Stylist {
     required this.stylist,
     this.id,
   });
+
   final String salonId;
   final String stylist;
   final String? id;
+
   Map<String, dynamic> toJson() {
     return {
       'salonId': salonId,

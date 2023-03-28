@@ -29,4 +29,12 @@ class ServiceRepository {
         .doc(service.id)
         .delete();
   }
+
+  Future<Service> editService(Service service) async {
+    await FirebaseFirestore.instance.collection("services").doc(service.id).set({
+      'modifiedAt': Timestamp.now(),
+      ...service.toJson(),
+    }, SetOptions(merge: true));
+    return service;
+  }
 }
