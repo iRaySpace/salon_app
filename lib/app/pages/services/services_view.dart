@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/services/services_add_view.dart';
 import 'package:salon_app/app/pages/stylists/stylists_add_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/service_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
@@ -41,6 +42,50 @@ class _StylistsViewState extends State<ServicesView> {
       MaterialPageRoute(
         builder: (context) => const ServicesAddView(),
       ),
+    );
+  }
+
+  void handleDelete(Service service) {
+    showAlertDialog(
+      context: context,
+      titleText: 'Confirm delete',
+      contentText: 'Are you sure you would like to delete this service?',
+      onContinue: () async {
+        Navigator.of(context).pop();
+
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 15.0),
+                    Text('Deleting a service'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+        try {
+          await ServiceRepository().deleteService(service);
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ServicesView(),
+            ),
+          );
+        } catch (err) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 
@@ -98,7 +143,8 @@ class _StylistsViewState extends State<ServicesView> {
                   ..._services
                       .map(
                         (service) => ServiceColumn(
-                          service: service.category,
+                          data: service,
+                          onDelete: handleDelete,
                         ),
                       )
                       .toList(),
@@ -115,16 +161,29 @@ class _StylistsViewState extends State<ServicesView> {
 class ServiceColumn extends StatelessWidget {
   const ServiceColumn({
     super.key,
-    required this.service,
+    // required this.service,
+    required this.data,
+    this.onDelete,
   });
-  final String service;
+  // final String service;
+  final Service data;
+  final Function(Service)? onDelete;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 15.0),
-        Text(service, textAlign: TextAlign.left),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(data.category, textAlign: TextAlign.left),
+            IconButton(
+              onPressed: () => onDelete?.call(data),
+              icon: const Icon(Icons.delete, color: Colors.red),
+            ),
+          ],
+        ),
         const SizedBox(height: 15.0),
         const Divider(),
       ],

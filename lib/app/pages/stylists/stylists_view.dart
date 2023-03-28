@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/app/pages/stylists/stylists_add_view.dart';
+import 'package:salon_app/app/widgets/dialog.dart';
 import 'package:salon_app/data/salon_repository.dart';
 import 'package:salon_app/data/stylist_repository.dart';
 import 'package:salon_app/domain/entities/stylist.dart';
@@ -38,6 +39,50 @@ class _StylistsViewState extends State<StylistsView> {
       MaterialPageRoute(
         builder: (context) => const StylistsAddView(),
       ),
+    );
+  }
+
+  void handleDelete(Stylist stylist) {
+    showAlertDialog(
+      context: context,
+      titleText: 'Confirm delete',
+      contentText: 'Are you sure you would like to delete this stylist?',
+      onContinue: () async {
+        Navigator.of(context).pop();
+
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (_) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 15.0),
+                    Text('Deleting a stylist'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+        try {
+          await StylistRepository().deleteStylist(stylist);
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const StylistsView(),
+            ),
+          );
+        } catch (err) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 
@@ -95,8 +140,7 @@ class _StylistsViewState extends State<StylistsView> {
                   ..._stylists
                       .map(
                         (stylist) => StylistColumn(
-                          stylist: stylist.stylist,
-                        ),
+                            data: stylist, onDelete: handleDelete),
                       )
                       .toList(),
                 ],
@@ -112,16 +156,27 @@ class _StylistsViewState extends State<StylistsView> {
 class StylistColumn extends StatelessWidget {
   const StylistColumn({
     super.key,
-    required this.stylist,
+    required this.data,
+    this.onDelete,
   });
-  final String stylist;
+  final Stylist data;
+  final Function(Stylist)? onDelete;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 15.0),
-        Text(stylist, textAlign: TextAlign.left),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(data.stylist, textAlign: TextAlign.left),
+            IconButton(
+              onPressed: () => onDelete?.call(data),
+              icon: const Icon(Icons.delete, color: Colors.red),
+            ),
+          ],
+        ),
         const SizedBox(height: 15.0),
         const Divider(),
       ],
