@@ -33,4 +33,11 @@ class StylistRepository {
     }
     return data;
   }
+
+  Future<void> deleteStylist(Stylist stylist) async {
+    await FirebaseFirestore.instance
+        .collection("stylist")
+        .doc(stylist.id)
+        .delete();
+  }
 }

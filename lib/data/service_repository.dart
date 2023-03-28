@@ -22,4 +22,11 @@ class ServiceRepository {
     }
     return data;
   }
+
+  Future<void> deleteService(Service service) async {
+    await FirebaseFirestore.instance
+        .collection("services")
+        .doc(service.id)
+        .delete();
+  }
 }
