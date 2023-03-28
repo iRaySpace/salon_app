@@ -41,6 +41,7 @@ class AuthRepository {
       lastName: customerData['lastName'],
       type: customerData['type'],
       gender: customerData['gender'] ?? '',
+      emailVerified: credential.user!.emailVerified,
     );
     AuthRepository.customer = customer;
     return customer;
@@ -64,6 +65,7 @@ class AuthRepository {
         lastName: customerData['lastName'],
         type: customerData['type'],
         gender: customerData['gender'] ?? '',
+        emailVerified: user.emailVerified,
       );
       AuthRepository.customer = customer;
     }

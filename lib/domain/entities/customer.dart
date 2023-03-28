@@ -5,6 +5,7 @@ class Customer {
     required this.lastName,
     required this.gender,
     required this.type,
+    this.emailVerified,
     this.uid,
     this.id,
   });
@@ -17,6 +18,7 @@ class Customer {
 
   final String? uid;
   final String? id;
+  final bool? emailVerified;
 
   static const customerType = 'customer';
   static const salonType = 'salon';

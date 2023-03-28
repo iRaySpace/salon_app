@@ -9,7 +9,6 @@ class StylistRepository {
     });
     return stylist;
   }
-
   Future<List<Stylist>> getStylists() async {
     final snapshot =
         await FirebaseFirestore.instance.collection("stylist").get();

@@ -38,6 +38,24 @@ class _SalonDetailViewState extends State<SalonDetailView> {
   }
 
   void handleMake() {
+    if (AuthRepository.customer == null) {
+      showOkDialog(
+        context: context,
+        titleText: 'Unable to make appointment',
+        contentText: 'Please login as a customer',
+      );
+      return;
+    }
+
+    if (AuthRepository.customer!.emailVerified == false) {
+      showOkDialog(
+        context: context,
+        titleText: 'Unable to make appointment',
+        contentText: 'Please verify your email',
+      );
+      return;
+    }
+
     final customerId = AuthRepository.customer!.uid;
     if (customerId == widget.salon.uid) {
       showOkDialog(
