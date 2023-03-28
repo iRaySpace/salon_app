@@ -22,7 +22,6 @@ class TopCard extends StatelessWidget {
         ),
         child: Container(
           width: 156.0,
-          height: 128.0,
           padding: const EdgeInsets.only(top: 15.0),
           decoration: const BoxDecoration(
             color: Color(0xFFC93480),
